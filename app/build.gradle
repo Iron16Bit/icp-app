@@ -72,4 +72,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation "org.mozilla.geckoview:geckoview-${geckoviewChannel}:${geckoviewVersion}"
+
+    implementation 'com.github.tejmagar:tinyweb:1.0.0'
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+
 }
