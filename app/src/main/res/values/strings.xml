@@ -2,4 +2,9 @@
     <string name="app_name">firefox-app</string>
     <string name="storage">Storage</string>
     <string name="server">Server</string>
+    <string name="Permissions">\n</string>
+    <string name="Server" />
+    <string name="permissions">Permissions</string>
+    <string name="serverf">Server</string>
+    <string name="start">Start</string>
 </resources>

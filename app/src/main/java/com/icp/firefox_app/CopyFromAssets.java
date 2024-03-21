@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CopyFromAssets {
-
     void copyAsset(String filename, String destDir, String subDir, Context context) {
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + destDir;
         File dir = new File(dirPath);
@@ -30,10 +29,8 @@ public class CopyFromAssets {
             File outFile = new File(dirPath, filename);
             out = new FileOutputStream(outFile);
             copyFile(in, out);
-            Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Failed...", Toast.LENGTH_SHORT).show();
         } finally {
             if (in != null) {
                 try {
