@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="#26364E"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/Info"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:text="info" />
+
+    <Button
+        android:id="@+id/Btn1"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Info"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:text="Import HTML" />
+
+    <Button
+        android:id="@+id/Btn2"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Btn1"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:text="select languages" />
+
+    <Button
+        android:id="@+id/Btn3"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Btn2"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:text="show slides" />
+
+</RelativeLayout>
