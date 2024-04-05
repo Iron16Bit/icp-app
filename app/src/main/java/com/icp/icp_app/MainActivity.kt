@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -80,6 +82,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    var HTML: String? = null
+
+    val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+//        Toast.makeText(this@MainActivity, uri.toString(), Toast.LENGTH_SHORT).show()
+        if (uri != null) {
+            val tmp = uri.path.toString().split(":")
+            HTML = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+            val text = findViewById<TextView>(R.id.importInfo)
+            text.text = HTML
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -95,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             if (!f.exists()) {
                 val files = f.list()
                 if (files != null) {
-                    if (files.size != 6) {
+                    if (files.size != 5) {
                         val copy = CopyInit()
                         copy.copy(this)
                     }
@@ -104,6 +118,8 @@ class MainActivity : AppCompatActivity() {
                     copy.copy(this)
                 }
             }
+            val copy = CopyInit()
+            copy.copy(this)
         }
 
         val info = findViewById<Button>(R.id.Info)
@@ -112,5 +128,26 @@ class MainActivity : AppCompatActivity() {
             showPopUp.show((this as AppCompatActivity).supportFragmentManager, "showPopUp")
         }
 
+        val selectHTML = findViewById<Button>(R.id.SelectHTML)
+        selectHTML.setOnClickListener {
+            getContentHTML.launch("text/html")
+        }
+
+        val importHTML = findViewById<Button>(R.id.ImportHTML)
+        importHTML.setOnClickListener {
+            if (HTML != null) {
+                val copy = CopyInit()
+                val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
+                copy.copyExternal(HTML!!, dstString)
+                Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "No HTML has been selected", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val startServer = findViewById<Button>(R.id.SHOW)
+        startServer.setOnClickListener {
+            val server = Server()
+        }
     }
 }

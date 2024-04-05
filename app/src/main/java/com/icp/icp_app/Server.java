@@ -1,6 +1,5 @@
-package com.icp.firefox_app;
+package com.icp.icp_app;
 
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -8,8 +7,6 @@ import android.webkit.MimeTypeMap;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 
 import fi.iki.elonen.NanoHTTPD;
 

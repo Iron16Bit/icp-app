@@ -26,7 +26,9 @@ class PopUpFragment : DialogFragment() {
         val text = view.findViewById<TextView>(R.id.text)
         val textString = "In order to use the app, please give the requested permissions.\n" +
                 "\n" +
-                "IMPORT HTML: allows to import from local memory HTML slides made for ICP\n" +
+                "SELECT HTML: select from local storage which set of ICP slides to show" +
+                "\n" +
+                "IMPORT HTML: once the slides have been selected, they will appear below the SELECT HTML button. Click on import to use them\n" +
                 "\n" +
                 "SELECT LANGUAGES: allows to import from local memory or download from the internet the support for the programming languages used in the slides\n" +
                 "\n" +

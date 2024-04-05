@@ -19,31 +19,52 @@
         android:text="info" />
 
     <Button
-        android:id="@+id/Btn1"
+        android:id="@+id/SelectHTML"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Info"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="   Select HTML   " />
+
+    <Button
+        android:id="@+id/ImportHTML"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/Info"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="5dp"
-        android:text="Import HTML" />
+        android:text="IMPORT HTML" />
+
+    <TextView
+        android:id="@+id/importInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SelectHTML"/>
 
     <Button
-        android:id="@+id/Btn2"
+        android:id="@+id/LANGUAGES"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Btn1"
+        android:layout_below="@id/importInfo"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
         android:text="select languages" />
 
     <Button
-        android:id="@+id/Btn3"
+        android:id="@+id/SHOW"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Btn2"
+        android:layout_below="@id/LANGUAGES"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
         android:text="show slides" />
