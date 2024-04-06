@@ -27,9 +27,9 @@ class CopyInit {
         zip.delete();
     }
 
-    fun copyExternal(srcString: String, dstString: String) {
+    fun copyExternal(srcString: String, dstString: String, fileName: String) {
         File(srcString).copyTo(
-            target = File(dstString, "index.html")
+            target = File(dstString, fileName)
         )
     }
 }

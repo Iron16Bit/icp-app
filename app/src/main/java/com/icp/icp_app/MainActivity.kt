@@ -8,7 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.text.method.ScrollingMovementMethod
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,8 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
 
 
 class MainActivity : AppCompatActivity() {
@@ -84,8 +84,7 @@ class MainActivity : AppCompatActivity() {
 
     var HTML: String? = null
 
-    val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-//        Toast.makeText(this@MainActivity, uri.toString(), Toast.LENGTH_SHORT).show()
+    private val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             val tmp = uri.path.toString().split(":")
             HTML = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
@@ -94,9 +93,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateAvailableLanguages() {
+        val textView = findViewById<TextView>(R.id.AvailableLanguages)
+        val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
+
+        var text = "Available languages:\n"
+
+        val availableFiles = folder.list()
+        for (f in availableFiles!!) {
+            if (f.endsWith(".js") && !f.startsWith("reveal")) {
+                val tmp = f.split(".")
+                text += "- " + tmp[0] + "\n"
+            }
+        }
+
+        textView.text = text
+    }
+
+    var Language: String? = null
+    private val getContentLanguage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            val tmp = uri.path.toString().split(":")
+            Language = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        updateAvailableLanguages()
 
         // Requests permission
         val permissions = Permissions()
@@ -138,16 +164,57 @@ class MainActivity : AppCompatActivity() {
             if (HTML != null) {
                 val copy = CopyInit()
                 val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
-                copy.copyExternal(HTML!!, dstString)
+
+                val indexFile = File(dstString + "index.html")
+                if (indexFile.exists()) {
+                    indexFile.delete()
+                }
+
+                copy.copyExternal(HTML!!, dstString, "index.html")
                 Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainActivity, "No HTML has been selected", Toast.LENGTH_SHORT).show()
             }
         }
 
+        val server = Server()
         val startServer = findViewById<Button>(R.id.SHOW)
         startServer.setOnClickListener {
-            val server = Server()
+            server.launch()
+            val url = "http://localhost:8080"
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(url)
+            )
+            val chooseIntent = Intent.createChooser(intent, "Choose from below")
+            startActivity(chooseIntent)
+        }
+
+        val selectLanguage = findViewById<Button>(R.id.SelectLanguage)
+        selectLanguage.setOnClickListener {
+            getContentLanguage.launch("*/*")
+        }
+
+        val importLanguage = findViewById<Button>(R.id.ImportLanguage)
+        importLanguage.setOnClickListener {
+            if (Language != null) {
+                val copy = CopyInit()
+                val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
+
+                val tmp = Language!!.split("/")
+                val languageName = tmp[tmp.size-1].split(".")
+
+                val languageFile = File(dstString + tmp[tmp.size-1])
+                if (languageFile.exists()) {
+                    languageFile.delete()
+                }
+
+                copy.copyExternal(Language!!, dstString, tmp[tmp.size-1])
+                Toast.makeText(this@MainActivity, "Imported " + languageName[0], Toast.LENGTH_SHORT).show()
+                updateAvailableLanguages()
+            } else {
+                Toast.makeText(this@MainActivity, "No language has been selected", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
