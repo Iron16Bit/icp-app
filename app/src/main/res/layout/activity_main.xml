@@ -10,85 +10,99 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:background="#26364E">
 
-        <Button
-            android:id="@+id/Info"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="12dp"
-            android:text="info" />
-
-        <Button
-            android:id="@+id/SelectHTML"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/Info"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="  Select HTML  " />
-
-        <Button
-            android:id="@+id/ImportHTML"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/Info"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
-            android:text="IMPORT" />
-
-        <TextView
-            android:id="@+id/importInfo"
+        <RelativeLayout
+            android:id="@+id/Header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/SelectHTML"/>
+            android:background="#182436">
 
-        <Button
-            android:id="@+id/SelectLanguage"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/importInfo"
-            android:layout_alignParentStart="true"
-            android:layout_margin="5dp"
-            android:text="select language" />
+            <ImageButton
+                android:id="@+id/Info"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/infobox" />
 
-        <Button
-            android:id="@+id/ImportLanguage"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/importInfo"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
-            android:text="import" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/AvailableLanguages"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/SelectLanguage"/>
+            android:padding="10dp"
+            android:layout_below="@id/Header">
 
-        <Button
-            android:id="@+id/SHOW"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/AvailableLanguages"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:text="show slides" />
+            <Button
+                android:id="@+id/SelectHTML"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="  Select HTML  " />
+
+            <Button
+                android:id="@+id/ImportHTML"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:text="IMPORT" />
+
+            <TextView
+                android:id="@+id/importInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/SelectHTML"/>
+
+            <Button
+                android:id="@+id/SelectLanguage"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/importInfo"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"
+                android:text="select language" />
+
+            <Button
+                android:id="@+id/ImportLanguage"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/importInfo"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:text="import" />
+
+            <TextView
+                android:id="@+id/AvailableLanguages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/SelectLanguage"/>
+
+            <Button
+                android:id="@+id/SHOW"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AvailableLanguages"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:text="show slides" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

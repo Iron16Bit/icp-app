@@ -10,6 +10,7 @@ import android.os.Environment
 import android.provider.Settings
 import android.text.method.ScrollingMovementMethod
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -148,8 +149,8 @@ class MainActivity : AppCompatActivity() {
             copy.copy(this)
         }
 
-        val info = findViewById<Button>(R.id.Info)
-        info.setOnClickListener {
+        val info = findViewById<ImageButton>(R.id.Info)
+        info.setOnClickListener{
             val showPopUp = PopUpFragment()
             showPopUp.show((this as AppCompatActivity).supportFragmentManager, "showPopUp")
         }
