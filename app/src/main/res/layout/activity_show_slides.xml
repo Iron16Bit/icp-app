@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#26364E">
+
+        <RelativeLayout
+            android:id="@+id/Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#182436">
+
+            <ImageButton
+                android:id="@+id/Info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:alpha="0.8"
+                android:src="@drawable/infobox" />
+
+            <ImageButton
+                android:id="@+id/Permissions"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toStartOf="@id/Info"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:layout_margin="12dp"
+                android:alpha="0.8"
+                android:src="@drawable/settings"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_below="@id/Header">
+
+            <TextView
+                android:id="@+id/TitleShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:text="SHOW SLIDES:"/>
+
+            <ImageView
+                android:id="@+id/ImageShow"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:alpha="0.4"
+                android:layout_below="@id/TitleShow"
+                android:src="@drawable/internet"/>
+
+            <Button
+                android:id="@+id/SHOW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/ImageShow"
+                android:layout_marginTop="70dp"
+                android:alpha="0.9"
+                android:text="SHOW SLIDES"/>
+
+            <ImageButton
+                android:id="@+id/PrevFromShow"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:scaleX="-1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/arrow"
+                android:alpha="0.5"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
