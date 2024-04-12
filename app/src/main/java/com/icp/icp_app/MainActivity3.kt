@@ -101,8 +101,7 @@ class MainActivity3 : AppCompatActivity() {
                 this,
                 MainActivity2::class.java
             )
-            val options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_from_right, R.anim.slide_from_left).toBundle()
-            this.startActivity(intentMain, options)
+            this.startActivity(intentMain)
         }
 
         val info = findViewById<ImageButton>(R.id.Info)

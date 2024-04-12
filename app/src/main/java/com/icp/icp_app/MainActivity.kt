@@ -156,8 +156,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 MainActivity2::class.java
             )
-            val options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_from_left, R.anim.slide_from_right).toBundle()
-            this.startActivity(intentMain, options)
+            this.startActivity(intentMain)
         }
 
         val permissionsButton = findViewById<ImageButton>(R.id.Permissions)

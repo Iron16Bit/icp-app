@@ -84,7 +84,7 @@ class MainActivity2 : AppCompatActivity() {
         val textView = findViewById<TextView>(R.id.AvailableLanguages)
         val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
 
-        var text = "Available languages:\n"
+        var text = "Available:\n"
 
         val availableFiles = folder.list()
         for (f in availableFiles!!) {
@@ -104,9 +104,35 @@ class MainActivity2 : AppCompatActivity() {
             Language = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
         }
     }
+
+    private fun getLanguagesInSlides() {
+        val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/index.html"
+        val htmlContent = File(path).readText(Charsets.UTF_8)
+
+        val regex = "<script src=.*></script>".toRegex()
+        val scripts = regex.findAll(htmlContent)
+
+        var text = "Needed:\n"
+
+        for (s in scripts) {
+            val split1 = s.value.split("src=")
+            val split2 = split1[1].split(">")
+            val split3 = split2[0].split(".")
+            val name = split3[0].drop(1)
+
+            if (name != "reveal") {
+                text += "- $name\n"
+            }
+        }
+
+        val textView = findViewById<TextView>(R.id.NeededLanguages)
+        textView.text = text
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_languages)
+        getLanguagesInSlides()
 
         updateAvailableLanguages()
 
@@ -143,8 +169,7 @@ class MainActivity2 : AppCompatActivity() {
                 this,
                 MainActivity3::class.java
             )
-            val options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_from_left, R.anim.slide_from_right).toBundle()
-            this.startActivity(intentMain, options)
+            this.startActivity(intentMain)
         }
 
         val prev = findViewById<ImageButton>(R.id.PrevFromLanguages)
@@ -153,8 +178,7 @@ class MainActivity2 : AppCompatActivity() {
                 this,
                 MainActivity::class.java
             )
-            val options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_from_right, R.anim.slide_from_left).toBundle()
-            this.startActivity(intentMain, options)
+            this.startActivity(intentMain)
         }
 
         val info = findViewById<ImageButton>(R.id.Info)
