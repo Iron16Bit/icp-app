@@ -107,22 +107,29 @@ class MainActivity2 : AppCompatActivity() {
 
     private fun getLanguagesInSlides() {
         val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/index.html"
-        val htmlContent = File(path).readText(Charsets.UTF_8)
-
-        val regex = "<script src=.*></script>".toRegex()
-        val scripts = regex.findAll(htmlContent)
+        val htmlFile = File(path)
 
         var text = "Needed:\n"
 
-        for (s in scripts) {
-            val split1 = s.value.split("src=")
-            val split2 = split1[1].split(">")
-            val split3 = split2[0].split(".")
-            val name = split3[0].drop(1)
+        if (htmlFile.exists()) {
 
-            if (name != "reveal") {
-                text += "- $name\n"
+            val htmlContent = htmlFile.readText(Charsets.UTF_8)
+
+            val regex = "<script src=.*></script>".toRegex()
+            val scripts = regex.findAll(htmlContent)
+
+            for (s in scripts) {
+                val split1 = s.value.split("src=")
+                val split2 = split1[1].split(">")
+                val split3 = split2[0].split(".")
+                val name = split3[0].drop(1)
+
+                if (name != "reveal") {
+                    text += "- $name\n"
+                }
             }
+        } else {
+            text += "- None\n"
         }
 
         val textView = findViewById<TextView>(R.id.NeededLanguages)
@@ -132,8 +139,8 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_languages)
-        getLanguagesInSlides()
 
+        getLanguagesInSlides()
         updateAvailableLanguages()
 
         val selectLanguage = findViewById<Button>(R.id.SelectLanguage)

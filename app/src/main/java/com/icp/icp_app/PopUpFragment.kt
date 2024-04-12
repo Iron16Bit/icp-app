@@ -30,7 +30,9 @@ class PopUpFragment : DialogFragment() {
                 "\n" +
                 "SELECT LANGUAGE: select from local storage the support for the programming languages used in the slides. Then press import on the right\n" +
                 "\n" +
-                "SHOW SLIDES: open slides in browser\n"
+                "SHOW SLIDES: open slides in browser\n" +
+                "\n" +
+                "NB: only Firefox supports C++, Python and Java"
         text.text = textString
         text.movementMethod = ScrollingMovementMethod()
 
