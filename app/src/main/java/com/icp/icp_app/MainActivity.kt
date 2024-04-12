@@ -1,6 +1,7 @@
 package com.icp.icp_app
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -155,7 +156,8 @@ class MainActivity : AppCompatActivity() {
                 this,
                 MainActivity2::class.java
             )
-            this.startActivity(intentMain)
+            val options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_from_left, R.anim.slide_from_right).toBundle()
+            this.startActivity(intentMain, options)
         }
 
         val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
@@ -166,6 +168,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             checkAndRequestPermissions()
+            val copy = CopyInit()
+            copy.copy(this)
         }
     }
 }
