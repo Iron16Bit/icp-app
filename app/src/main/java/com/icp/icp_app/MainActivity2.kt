@@ -154,16 +154,14 @@ class MainActivity2 : AppCompatActivity() {
                 val copy = CopyInit()
                 val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                val tmp = Language!!.split("/")
-                val languageName = tmp[tmp.size-1].split(".")
+                copy.copyExternal(Language!!, dstString, "export_languages.zip")
+                val zip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")
+                val destZip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
+                CopyFromAssets.unzip(zip, destZip)
+                zip.delete()
 
-                val languageFile = File(dstString + tmp[tmp.size-1])
-                if (languageFile.exists()) {
-                    languageFile.delete()
-                }
+                Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show()
 
-                copy.copyExternal(Language!!, dstString, tmp[tmp.size-1])
-                Toast.makeText(this, "Imported " + languageName[0], Toast.LENGTH_SHORT).show()
                 updateAvailableLanguages()
             } else {
                 Toast.makeText(this, "No language has been selected", Toast.LENGTH_SHORT).show()
