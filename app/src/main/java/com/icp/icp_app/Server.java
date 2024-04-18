@@ -20,7 +20,7 @@ public class Server extends NanoHTTPD {
     public void launch() throws IOException {
         if (!active) {
             active = true;
-            start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+            start();
         }
     }
 
@@ -28,7 +28,7 @@ public class Server extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         String answer = "";
         Log.w("HTTPD", session.getUri());
-        Log.w("HTTPD", session.getParameters().toString());
+        Log.w("HTTPD", session.getParms().toString());
 
         Log.w("HTTPD", "Method is: "+session.getMethod().toString());
         Log.w("HTTPD", "Header is: "+session.getMethod().toString());
@@ -53,7 +53,7 @@ public class Server extends NanoHTTPD {
 
         Log.w("HTTPD", "MIME is: " + mime);
 
-        return newChunkedResponse(Response.Status.OK, mime, fis);
+        return new Response(Response.Status.OK, mime, fis);
     }
 
     public static String getMimeType(String url) {
