@@ -1,7 +1,6 @@
 package com.icp.icp_app
 
 import android.Manifest
-import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -85,7 +84,7 @@ class MainActivity3 : AppCompatActivity() {
         val server = Server()
         val startServer = findViewById<Button>(R.id.SHOW)
         startServer.setOnClickListener {
-            server.launch()
+            server.start()
             val url = "http://localhost:8080"
             val intent = Intent(
                 Intent.ACTION_VIEW,

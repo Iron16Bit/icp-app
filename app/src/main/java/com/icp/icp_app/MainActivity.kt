@@ -1,7 +1,6 @@
 package com.icp.icp_app
 
 import android.Manifest
-import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -40,10 +39,10 @@ class MainActivity : AppCompatActivity() {
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
             }
             if (readStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             if (!listPermissionsNeeded.isEmpty()) {
                 ActivityCompat.requestPermissions(
@@ -54,13 +53,48 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             return true
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
 
             val listPermissionsNeeded: MutableList<String> = ArrayList()
 
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    listPermissionsNeeded.toTypedArray<String>(),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS
+                )
+                return false
+            }
+
+            if(!Environment.isExternalStorageManager()) {
+                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    .setData(Uri.parse("package:$packageName"))
+                startActivity(intent)
+            }
+
+            return true;
+        } else {
+            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+
+            val listPermissionsNeeded: MutableList<String> = ArrayList()
+
+            if (internet != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -85,11 +119,17 @@ class MainActivity : AppCompatActivity() {
     var HTML: String? = null
 
     private val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            val tmp = uri.path.toString().split(":")
-            HTML = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+        if (uri != null) {  // Check if Oreo (8) is good or it should be reduced to Marshmallow (6)
+            HTML = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                PathUtil.getPath(this, uri)
+            } else {
+                val tmp = uri.path.toString().split(":")
+                Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+            }
+
             val text = findViewById<TextView>(R.id.importInfo)
-            text.text = HTML
+            val displayedText = "Selected: $HTML"
+            text.text = displayedText
         }
     }
 

@@ -100,8 +100,16 @@ class MainActivity2 : AppCompatActivity() {
     var Language: String? = null
     private val getContentLanguage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
-            val tmp = uri.path.toString().split(":")
-            Language = Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+            Language = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                PathUtil.getPath(this, uri)
+            } else {
+                val tmp = uri.path.toString().split(":")
+                Environment.getExternalStorageDirectory().absolutePath + "/" + tmp[tmp.size-1]
+            }
+
+            val text = findViewById<TextView>(R.id.importInfo)
+            val displayedText = "Selected: $Language"
+            text.text = displayedText
         }
     }
 
