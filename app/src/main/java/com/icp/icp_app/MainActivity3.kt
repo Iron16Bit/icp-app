@@ -1,6 +1,9 @@
 package com.icp.icp_app
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -81,10 +84,19 @@ class MainActivity3 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_slides)
 
-        val server = Server()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("running_channel", "Running Notification", NotificationManager.IMPORTANCE_DEFAULT)
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
         val startServer = findViewById<Button>(R.id.SHOW)
         startServer.setOnClickListener {
-            server.start()
+            Intent(applicationContext, ServerService::class.java).also {
+                it.action = ServerService.Actions.START.toString()
+                startService(it)
+            }
+
             val url = "http://localhost:8080"
             val intent = Intent(
                 Intent.ACTION_VIEW,

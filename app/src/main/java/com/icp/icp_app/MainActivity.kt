@@ -1,21 +1,27 @@
 package com.icp.icp_app
 
+import PathUtil
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import java.io.File
 
 
@@ -55,11 +61,21 @@ class MainActivity : AppCompatActivity() {
             return true
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
             val listPermissionsNeeded: MutableList<String> = ArrayList()
 
             if (internet != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -82,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
             val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
             val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
             val listPermissionsNeeded: MutableList<String> = ArrayList()
 
@@ -89,12 +106,16 @@ class MainActivity : AppCompatActivity() {
                 listPermissionsNeeded.add(Manifest.permission.INTERNET)
             }
 
-            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
             }
 
             if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -130,9 +151,14 @@ class MainActivity : AppCompatActivity() {
             val text = findViewById<TextView>(R.id.importInfo)
             val displayedText = "Selected: $HTML"
             text.text = displayedText
+
+            val box = findViewById<RelativeLayout>(R.id.infoContainer)
+            box.visibility = VISIBLE
+            updateColor(findViewById(R.id.ImportHTML))
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slides)
@@ -167,11 +193,6 @@ class MainActivity : AppCompatActivity() {
             showPopUp.show((this as AppCompatActivity).supportFragmentManager, "showPopUp")
         }
 
-        val selectHTML = findViewById<Button>(R.id.SelectHTML)
-        selectHTML.setOnClickListener {
-            getContentHTML.launch("text/html")
-        }
-
         val importHTML = findViewById<Button>(R.id.ImportHTML)
         importHTML.setOnClickListener {
             if (HTML != null) {
@@ -190,6 +211,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val selectHTML = findViewById<Button>(R.id.SelectHTML)
+        selectHTML.setOnClickListener {
+            getContentHTML.launch("text/html")
+        }
+
         val next = findViewById<ImageButton>(R.id.NextFromHTML)
         next.setOnClickListener{
             val intentMain = Intent(
@@ -206,9 +232,18 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
             }
 
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+            startActivity(intent)
+
             checkAndRequestPermissions()
             val copy = CopyInit()
             copy.copy(this)
+        }
+    }
+
+    private fun updateColor(btn: Button?) {
+        if (HTML != null) {
+            btn?.background?.setTint(Color.parseColor("#604D9B"))
         }
     }
 }

@@ -24,6 +24,11 @@ public class Server extends NanoHTTPD {
         }
     }
 
+    public void stop() {
+        closeAllConnections();
+        stop();
+    }
+
     @Override
     public Response serve(IHTTPSession session) {
         String answer = "";
