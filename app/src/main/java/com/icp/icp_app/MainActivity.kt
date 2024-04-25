@@ -157,10 +157,7 @@ class MainActivity : AppCompatActivity() {
             updateColor(findViewById(R.id.ImportHTML))
         }
     }
-
-
-
-    @RequiresApi(Build.VERSION_CODES.M)
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_slides)

@@ -66,7 +66,6 @@ class ServerService : Service() {
     }
 
     private fun stop() {
-        Toast.makeText(this, "Closing", Toast.LENGTH_SHORT).show()
         server?.stop()
         stopSelf()
     }

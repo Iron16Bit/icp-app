@@ -61,12 +61,13 @@
 
             <ImageView
                 android:id="@+id/ImageSlides"
-                android:layout_width="300dp"
-                android:layout_height="100dp"
+                android:layout_width="980px"
+                android:layout_height="272px"
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/TitleSlides"
-                android:src="@drawable/importhtml"/>
+                android:alpha="0.8"
+                android:src="@drawable/activity1"/>
 
             <Button
                 android:id="@+id/SelectHTML"
@@ -100,10 +101,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:textColor="@color/white"
+                        android:textColor="#bbb9fa"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         android:textAlignment="center"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -118,7 +119,7 @@
                         android:textColor="@color/white"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="8dp"
                         android:textAlignment="center"
                         android:textStyle="italic"
                         android:textSize="12sp" />

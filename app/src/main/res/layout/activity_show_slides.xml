@@ -61,23 +61,97 @@
 
             <ImageView
                 android:id="@+id/ImageShow"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="980px"
+                android:layout_height="272px"
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
-                android:alpha="0.4"
                 android:layout_below="@id/TitleShow"
-                android:src="@drawable/internet"/>
+                android:alpha="0.8"
+                android:src="@drawable/activity3"/>
 
             <Button
-                android:id="@+id/SHOW"
+                android:id="@+id/server"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/ImageShow"
-                android:layout_marginTop="70dp"
+                android:backgroundTint="#604D9B"
+                android:textColor="@color/white"
+                android:layout_marginTop="40dp"
                 android:alpha="0.9"
-                android:text="SHOW SLIDES"/>
+                android:text="START SERVER"/>
+
+            <Button
+                android:id="@+id/open"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/server"
+                android:backgroundTint="#182436"
+                android:textColor="#933efa"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="5dp"
+                app:cornerRadius="0dp"
+                android:text="OPEN DEFAULT BROWSER"/>
+
+            <TextView
+                android:id="@+id/or"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/open"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:text="~ OR ~"/>
+
+            <RelativeLayout
+                android:id="@+id/infoContainer"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/or"
+                android:background="#5a565c"
+                android:layout_margin="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:background="#182436">
+
+                    <TextView
+                        android:id="@+id/importInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#933efa"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="italic"
+                        android:textSize="18sp"
+                        android:text="http://localhost:8080"/>
+
+                    <ImageButton
+                        android:id="@+id/copy"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="?android:selectableItemBackground"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/copy"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <ImageButton
                 android:id="@+id/PrevFromShow"

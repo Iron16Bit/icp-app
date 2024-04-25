@@ -3,6 +3,8 @@ package com.icp.icp_app
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,8 +13,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -140,13 +145,8 @@ class MainActivity3 : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        val startServer = findViewById<Button>(R.id.SHOW)
-        startServer.setOnClickListener {
-            Intent(applicationContext, ServerService::class.java).also {
-                it.action = ServerService.Actions.START.toString()
-                startService(it)
-            }
-
+        val openBrowser = findViewById<Button>(R.id.open)
+        openBrowser.setOnClickListener {
             val url = "http://localhost:8080"
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -154,6 +154,15 @@ class MainActivity3 : AppCompatActivity() {
             )
             val chooseIntent = Intent.createChooser(intent, "Choose from below")
             startActivity(chooseIntent)
+        }
+
+        val copyButton = findViewById<ImageButton>(R.id.copy)
+        copyButton.setOnClickListener {
+            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val textCopied = findViewById<TextView>(R.id.importInfo).text
+            clipboardManager.setPrimaryClip(ClipData.newPlainText   ("", textCopied))
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
+                Toast.makeText(this, "Copied", Toast.LENGTH_SHORT).show()
         }
 
         val prev = findViewById<ImageButton>(R.id.PrevFromShow)
@@ -181,6 +190,18 @@ class MainActivity3 : AppCompatActivity() {
                 checkAndRequestPermissions()
             }
             permissions.initDir(this)
+        }
+
+        val startServer = findViewById<Button>(R.id.server)
+        startServer.setOnClickListener {
+            Intent(applicationContext, ServerService::class.java).also {
+                it.action = ServerService.Actions.START.toString()
+                startService(it)
+            }
+
+            openBrowser.visibility = VISIBLE
+            findViewById<RelativeLayout>(R.id.infoContainer).visibility = VISIBLE
+            findViewById<TextView>(R.id.or).visibility = VISIBLE
         }
     }
 }

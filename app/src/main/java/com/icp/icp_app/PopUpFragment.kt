@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
@@ -23,18 +24,25 @@ class PopUpFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val text = view.findViewById<TextView>(R.id.text)
-        val textString = "In order to use the app, please give the requested permissions.\n" +
+        val text1 = view.findViewById<TextView>(R.id.Text1)
+        val textString1 = "Select the set of ICP slides to show from local storage. Then press import"
+        text1.text = textString1
+
+        val text2 = view.findViewById<TextView>(R.id.Text2)
+        val textString2 = "Select from local storage the support for the programming languages used in the slides. Then press import on the right\n" +
                 "\n" +
-                "SELECT SLIDES: select from local storage which set of ICP slides to show. Then press import on the right\n" +
-                "\n" +
-                "SELECT LANGUAGE: select from local storage the support for the programming languages used in the slides. Then press import on the right\n" +
-                "\n" +
-                "SHOW SLIDES: open slides in browser\n" +
-                "\n" +
-                "NB: only Firefox supports C++, Python and Java"
-        text.text = textString
-        text.movementMethod = ScrollingMovementMethod()
+                "NOTE: Languages are distributed through export_languages.zip files"
+        text2.text = textString2
+
+        val text3 = view.findViewById<TextView>(R.id.Text3)
+        val textString3 = "First start the local server, then either:\n" +
+                "- Open them on the default browser\n" +
+                "- Copy the link and paste it in the desired browser"
+        text3.text = textString3
+
+        val text4 = view.findViewById<TextView>(R.id.Text4)
+        val textString4 = "Java, Python and C++ can only be used in Firefox"
+        text4.text = textString4
 
         val exit = view.findViewById<Button>(R.id.exit)
         exit.setOnClickListener{
