@@ -38,10 +38,10 @@ class MainActivity3 : AppCompatActivity() {
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
             }
             if (readStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             if (!listPermissionsNeeded.isEmpty()) {
                 ActivityCompat.requestPermissions(
@@ -52,13 +52,63 @@ class MainActivity3 : AppCompatActivity() {
                 return false
             }
             return true
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
             val listPermissionsNeeded: MutableList<String> = ArrayList()
 
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    listPermissionsNeeded.toTypedArray<String>(),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS
+                )
+                return false
+            }
+
+            if(!Environment.isExternalStorageManager()) {
+                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    .setData(Uri.parse("package:$packageName"))
+                startActivity(intent)
+            }
+
+            return true;
+        } else {
+            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+
+            val listPermissionsNeeded: MutableList<String> = ArrayList()
+
+            if (internet != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -127,11 +177,10 @@ class MainActivity3 : AppCompatActivity() {
             val permissionState = permissions.checkPermissions(this)
             if (permissionState) {
                 Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
+            } else {
+                checkAndRequestPermissions()
             }
-
-            checkAndRequestPermissions()
-            val copy = CopyInit()
-            copy.copy(this)
+            permissions.initDir(this)
         }
     }
 }

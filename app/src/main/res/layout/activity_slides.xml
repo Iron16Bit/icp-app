@@ -61,13 +61,12 @@
 
             <ImageView
                 android:id="@+id/ImageSlides"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
-                android:alpha="0.4"
                 android:layout_below="@id/TitleSlides"
-                android:src="@drawable/slides"/>
+                android:src="@drawable/importhtml"/>
 
             <Button
                 android:id="@+id/SelectHTML"
@@ -89,6 +88,7 @@
                 android:layout_below="@id/SelectHTML"
                 android:background="#5a565c"
                 android:layout_margin="8dp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,15 +96,35 @@
                     android:background="#182436">
 
                     <TextView
-                        android:id="@+id/importInfo"
+                        android:id="@+id/importTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/white"
-                        android:layout_margin="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="4dp"
                         android:textAlignment="center"
-                        android:textSize="18sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="SELECTED:"/>
+
+                    <TextView
+                        android:id="@+id/importInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/importTitle"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="center"
+                        android:textStyle="italic"
+                        android:textSize="12sp" />
+
                 </RelativeLayout>
+
             </RelativeLayout>
 
             <Button

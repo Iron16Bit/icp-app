@@ -12,14 +12,7 @@ class CopyInit {
     fun copy(context: Context) {
         val copy = CopyFromAssets()
 
-        val listAssets = context.assets.list("")?.clone()
-        if (listAssets != null) {
-            if (listAssets.isNotEmpty()) {
-                for (file in listAssets) {
-                    copy.copyAsset(file, "/MyFiles/", "", context)
-                }
-            }
-        }
+        copy.copyAsset("icp_bundle.zip", "/MyFiles/", "", context)
 
         val zip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/icp_bundle.zip")
         val destZip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")

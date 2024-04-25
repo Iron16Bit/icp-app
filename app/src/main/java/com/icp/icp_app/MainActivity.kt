@@ -2,6 +2,7 @@ package com.icp.icp_app
 
 import PathUtil
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -26,7 +27,7 @@ import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
-    val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
+    private val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
 
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
@@ -149,14 +150,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             val text = findViewById<TextView>(R.id.importInfo)
-            val displayedText = "Selected: $HTML"
-            text.text = displayedText
+            text.text = HTML
 
             val box = findViewById<RelativeLayout>(R.id.infoContainer)
             box.visibility = VISIBLE
             updateColor(findViewById(R.id.ImportHTML))
         }
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,21 +172,7 @@ class MainActivity : AppCompatActivity() {
             checkAndRequestPermissions()
         } else {
             // If it hasn't been done, copies the main ICP files in the device's memory
-            val f = File("/MyFiles")
-            if (!f.exists()) {
-                val files = f.list()
-                if (files != null) {
-                    if (files.size != 5) {
-                        val copy = CopyInit()
-                        copy.copy(this)
-                    }
-                } else {
-                    val copy = CopyInit()
-                    copy.copy(this)
-                }
-            }
-            val copy = CopyInit()
-            copy.copy(this)
+            permissions.initDir(this)
         }
 
         val info = findViewById<ImageButton>(R.id.Info)
@@ -206,6 +194,8 @@ class MainActivity : AppCompatActivity() {
 
                 copy.copyExternal(HTML!!, dstString, "index.html")
                 Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
+
+                val sharedPref = getPreferences(Context.MODE_PRIVATE)
             } else {
                 Toast.makeText(this@MainActivity, "No HTML has been selected", Toast.LENGTH_SHORT).show()
             }
@@ -222,7 +212,14 @@ class MainActivity : AppCompatActivity() {
                 this,
                 MainActivity2::class.java
             )
-            this.startActivity(intentMain)
+
+            val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
+            val indexFile = File(dstString + "index.html")
+            if (indexFile.exists()) {
+                this.startActivity(intentMain)
+            } else {
+                Toast.makeText(this, "No HTML slides imported", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
@@ -230,14 +227,10 @@ class MainActivity : AppCompatActivity() {
             permissionState = permissions.checkPermissions(this)
             if (permissionState) {
                 Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
+            } else {
+                checkAndRequestPermissions()
             }
-
-            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-            startActivity(intent)
-
-            checkAndRequestPermissions()
-            val copy = CopyInit()
-            copy.copy(this)
+            permissions.initDir(this)
         }
     }
 

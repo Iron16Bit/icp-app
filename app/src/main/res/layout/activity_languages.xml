@@ -76,29 +76,67 @@
                 android:id="@+id/LanguagesContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#5a565c"
+                android:layout_margin="8dp"
                 android:layout_below="@id/ImageLanguages">
 
-                <TextView
-                    android:id="@+id/AvailableLanguages"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="test"/>
+                    android:layout_margin="2dp"
+                    android:background="#182436">
 
-                <TextView
-                    android:id="@+id/NeededLanguages"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="test"/>
+                    <TextView
+                        android:id="@+id/NeededLanguagesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="NEEDED:"/>
+
+                    <TextView
+                        android:id="@+id/NeededLanguages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@id/NeededLanguagesTitle"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="test"/>
+
+                    <TextView
+                        android:id="@+id/AvailableLanguagesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="AVAILABLE:"/>
+
+                    <TextView
+                        android:id="@+id/AvailableLanguages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@id/AvailableLanguagesTitle"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:text="test"/>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -108,27 +146,69 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/LanguagesContainer"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#604D9B"
+                android:textColor="@color/white"
                 android:alpha="0.9"
                 android:text="SELECT LANGUAGE"/>
 
-            <TextView
-                android:id="@+id/importInfo"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/box"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/SelectLanguage"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:visibility="gone"
+                android:background="#5a565c"
+                android:layout_margin="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:background="#182436">
+
+                    <TextView
+                        android:id="@+id/importTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="SELECTED:"/>
+
+                    <TextView
+                        android:id="@+id/importInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/importTitle"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:textAlignment="center"
+                        android:textStyle="italic"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/ImportLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/importInfo"
-                android:layout_marginTop="30dp"
+                android:layout_below="@id/box"
+                android:layout_marginTop="20dp"
                 android:alpha="0.9"
+                android:backgroundTint="#565c58"
+                android:textColor="@color/white"
                 android:text="IMPORT"/>
 
             <ImageButton

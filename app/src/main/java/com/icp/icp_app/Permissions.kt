@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import java.io.File
 
 class Permissions {
     fun checkPermissions(context: Context): Boolean {
@@ -43,6 +45,24 @@ class Permissions {
             }
 
             return true;
+        }
+    }
+
+    fun initDir(context: Context) {
+        val f = File("/MyFiles")
+        if (f.exists()) {
+            val files = f.list()
+            if (files != null) {
+                if (files.size < 5) {
+                    val copy = CopyInit()
+                    copy.copy(context)
+                    Toast.makeText(context, "App successfully initialized!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            val copy = CopyInit()
+            copy.copy(context)
+            Toast.makeText(context, "App successfully initialized!", Toast.LENGTH_SHORT).show()
         }
     }
 }

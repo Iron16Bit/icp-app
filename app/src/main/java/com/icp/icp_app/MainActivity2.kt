@@ -4,13 +4,16 @@ import android.Manifest
 import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,10 +42,10 @@ class MainActivity2 : AppCompatActivity() {
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
             }
             if (readStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             if (!listPermissionsNeeded.isEmpty()) {
                 ActivityCompat.requestPermissions(
@@ -53,13 +56,63 @@ class MainActivity2 : AppCompatActivity() {
                 return false
             }
             return true
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
 
             val listPermissionsNeeded: MutableList<String> = ArrayList()
 
             if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    listPermissionsNeeded.toTypedArray<String>(),
+                    REQUEST_ID_MULTIPLE_PERMISSIONS
+                )
+                return false
+            }
+
+            if(!Environment.isExternalStorageManager()) {
+                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    .setData(Uri.parse("package:$packageName"))
+                startActivity(intent)
+            }
+
+            return true;
+        } else {
+            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
+            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+
+            val listPermissionsNeeded: MutableList<String> = ArrayList()
+
+            if (internet != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.INTERNET)
+            }
+
+            if (foreground != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
+            }
+
+            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
+            }
+
+            if (notification != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
 
             if (!listPermissionsNeeded.isEmpty()) {
@@ -84,7 +137,7 @@ class MainActivity2 : AppCompatActivity() {
         val textView = findViewById<TextView>(R.id.AvailableLanguages)
         val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
 
-        var text = "Available:\n"
+        var text = ""
 
         val availableFiles = folder.list()
         for (f in availableFiles!!) {
@@ -108,8 +161,17 @@ class MainActivity2 : AppCompatActivity() {
             }
 
             val text = findViewById<TextView>(R.id.importInfo)
-            val displayedText = "Selected: $Language"
-            text.text = displayedText
+            text.text = Language
+
+            val box = findViewById<RelativeLayout>(R.id.box)
+            box.visibility = View.VISIBLE
+            updateColor(findViewById(R.id.ImportLanguage))
+        }
+    }
+
+    private fun updateColor(btn: Button?) {
+        if (Language != null) {
+            btn?.background?.setTint(Color.parseColor("#604D9B"))
         }
     }
 
@@ -117,7 +179,7 @@ class MainActivity2 : AppCompatActivity() {
         val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/index.html"
         val htmlFile = File(path)
 
-        var text = "Needed:\n"
+        var text = ""
 
         if (htmlFile.exists()) {
 
@@ -142,6 +204,13 @@ class MainActivity2 : AppCompatActivity() {
 
         val textView = findViewById<TextView>(R.id.NeededLanguages)
         textView.text = text
+    }
+
+    private fun checkAvailability(): Boolean {
+        val available = findViewById<TextView>(R.id.AvailableLanguages).text
+        val needed = findViewById<TextView>(R.id.NeededLanguages).text
+
+        return available.contains(needed)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,7 +251,12 @@ class MainActivity2 : AppCompatActivity() {
                 this,
                 MainActivity3::class.java
             )
-            this.startActivity(intentMain)
+
+            if (checkAvailability()) {
+                this.startActivity(intentMain)
+            } else {
+                Toast.makeText(this, "Needed languages not imported", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val prev = findViewById<ImageButton>(R.id.PrevFromLanguages)
@@ -206,11 +280,10 @@ class MainActivity2 : AppCompatActivity() {
             val permissionState = permissions.checkPermissions(this)
             if (permissionState) {
                 Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
+            } else {
+                checkAndRequestPermissions()
             }
-
-            checkAndRequestPermissions()
-            val copy = CopyInit()
-            copy.copy(this)
+            permissions.initDir(this)
         }
     }
 }
