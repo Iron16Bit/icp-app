@@ -155,9 +155,11 @@ class MainActivity2 : AppCompatActivity() {
                 val copy = CopyInit()
                 val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                val fileName = Language!!.split("/")
+                val path = Language!!.split("/")
+                val fileName = path[path.lastIndex]
+                val regex = ".*.zip".toRegex()
 
-                if (fileName[fileName.lastIndex] == "export_languages.zip") {
+                if (fileName.contains(regex)) {
                     copy.copyExternal(Language!!, dstString, "export_languages.zip")
                     val zip =
                         File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")

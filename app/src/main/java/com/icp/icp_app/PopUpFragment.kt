@@ -31,7 +31,7 @@ class PopUpFragment : DialogFragment() {
         val text2 = view.findViewById<TextView>(R.id.Text2)
         val textString2 = "Select from local storage the support for the programming languages used in the slides. Then press import on the right\n" +
                 "\n" +
-                "NOTE: Languages are distributed through export_languages.zip files"
+                "NOTE: Languages are distributed through .zip files"
         text2.text = textString2
 
         val text3 = view.findViewById<TextView>(R.id.Text3)
