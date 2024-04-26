@@ -27,111 +27,35 @@ class MainActivity2 : AppCompatActivity() {
 
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
+        val permissions = Permissions()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            // Storage
-            val writeStorage =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            val readStorage =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-            // Internet
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-            if (writeStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-            if (readStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-            return true
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
-            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-
-            if (foreground != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
-            }
-
-            if (notification != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-
-            if(!Environment.isExternalStorageManager()) {
-                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    .setData(Uri.parse("package:$packageName"))
+            if (!Environment.isExternalStorageManager()) {
+                val intent: Intent =
+                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                        .setData(Uri.parse("package:$packageName"))
                 startActivity(intent)
             }
 
-            return true;
+            return true
         } else {
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
-            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
-            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-
-            if (foreground != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
-            }
-
-            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
-            }
-
-            if (notification != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-
-            if(!Environment.isExternalStorageManager()) {
-                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    .setData(Uri.parse("package:$packageName"))
+            if (!Environment.isExternalStorageManager()) {
+                val intent: Intent =
+                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                        .setData(Uri.parse("package:$packageName"))
                 startActivity(intent)
             }
 
-            return true;
+            return true
         }
+        return false
     }
     private fun updateAvailableLanguages() {
         val textView = findViewById<TextView>(R.id.AvailableLanguages)
@@ -231,15 +155,23 @@ class MainActivity2 : AppCompatActivity() {
                 val copy = CopyInit()
                 val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                copy.copyExternal(Language!!, dstString, "export_languages.zip")
-                val zip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")
-                val destZip = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
-                CopyFromAssets.unzip(zip, destZip)
-                zip.delete()
+                val fileName = Language!!.split("/")
 
-                Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show()
+                if (fileName[fileName.lastIndex] == "export_languages.zip") {
+                    copy.copyExternal(Language!!, dstString, "export_languages.zip")
+                    val zip =
+                        File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")
+                    val destZip =
+                        File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
+                    CopyFromAssets.unzip(zip, destZip)
+                    zip.delete()
 
-                updateAvailableLanguages()
+                    Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show()
+
+                    updateAvailableLanguages()
+                } else {
+                    Toast.makeText(this, "Selected file not supported", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "No language has been selected", Toast.LENGTH_SHORT).show()
             }

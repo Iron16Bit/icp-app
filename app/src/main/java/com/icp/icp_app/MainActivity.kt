@@ -4,6 +4,7 @@ import PathUtil
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
@@ -18,127 +19,48 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
-    private val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
-
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
+        val permissions = Permissions()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            // Storage
-            val writeStorage =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            val readStorage =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-            // Internet
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-            if (writeStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-            if (readStorage != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-            return true
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
-            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-
-            if (foreground != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
-            }
-
-            if (notification != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-
-            if(!Environment.isExternalStorageManager()) {
-                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    .setData(Uri.parse("package:$packageName"))
+            if (!Environment.isExternalStorageManager()) {
+                val intent: Intent =
+                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                        .setData(Uri.parse("package:$packageName"))
                 startActivity(intent)
             }
 
-            return true;
+            return true
         } else {
-            val internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-            val foregroundSpecial = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
-            val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE)
-            val notification = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            permissions.checkAndRequestPermissions(this)
 
-            val listPermissionsNeeded: MutableList<String> = ArrayList()
-
-            if (internet != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.INTERNET)
-            }
-
-            if (foreground != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE)
-            }
-
-            if (foregroundSpecial != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.FOREGROUND_SERVICE_SPECIAL_USE)
-            }
-
-            if (notification != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    listPermissionsNeeded.toTypedArray<String>(),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS
-                )
-                return false
-            }
-
-            if(!Environment.isExternalStorageManager()) {
-                val intent: Intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    .setData(Uri.parse("package:$packageName"))
+            if (!Environment.isExternalStorageManager()) {
+                val intent: Intent =
+                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                        .setData(Uri.parse("package:$packageName"))
                 startActivity(intent)
             }
 
-            return true;
+            return true
         }
+        return false
     }
 
-    var HTML: String? = null
+    private var sharedPref: SharedPreferences? = null
+    private var HTML: String? = getLastHtml()
 
     private val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {  // Check if Oreo (8) is good or it should be reduced to Marshmallow (6)
@@ -155,20 +77,39 @@ class MainActivity : AppCompatActivity() {
             val box = findViewById<RelativeLayout>(R.id.infoContainer)
             box.visibility = VISIBLE
             updateColor(findViewById(R.id.ImportHTML))
+
+            val title = findViewById<TextView>(R.id.importTitle)
+            val text2 = "SELECTED:"
+            title.text = text2
         }
     }
-    
+
+    private fun getLastHtml(): String? {
+        if (sharedPref?.contains("selected_html") == true) {
+            val lastHtml = sharedPref!!.getString("selected_html", null)
+            val box = findViewById<RelativeLayout>(R.id.infoContainer)
+            box.visibility = VISIBLE
+
+            val text = findViewById<TextView>(R.id.importInfo)
+            text.text = lastHtml
+
+            return lastHtml
+        }
+        return null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPref = this.getSharedPreferences("my_pref", MODE_PRIVATE)
         setContentView(R.layout.activity_slides)
+
+        // Unused value needed to actually show the last selected HTML
+        val tmp = getLastHtml()
 
         // Requests permission
         val permissions = Permissions()
-        var permissionState = permissions.checkPermissions(this)
-        if (!permissionState) {
-            checkAndRequestPermissions()
-        } else {
-            // If it hasn't been done, copies the main ICP files in the device's memory
+        if (checkAndRequestPermissions()) {
             permissions.initDir(this)
         }
 
@@ -190,9 +131,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 copy.copyExternal(HTML!!, dstString, "index.html")
-                Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
 
-                val sharedPref = getPreferences(Context.MODE_PRIVATE)
+                val editor = sharedPref?.edit()
+                if (editor != null) {
+                    editor.putString("selected_html", HTML)
+                    editor.apply()
+                }
+
+                Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainActivity, "No HTML has been selected", Toast.LENGTH_SHORT).show()
             }
@@ -221,11 +167,8 @@ class MainActivity : AppCompatActivity() {
 
         val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
         permissionsButton.setOnClickListener {
-            permissionState = permissions.checkPermissions(this)
-            if (permissionState) {
+            if (checkAndRequestPermissions()) {
                 Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
-            } else {
-                checkAndRequestPermissions()
             }
             permissions.initDir(this)
         }
