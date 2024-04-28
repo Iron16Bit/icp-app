@@ -207,6 +207,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/box"
                 android:alpha="0.9"
+                android:layout_marginBottom="60dp"
                 android:backgroundTint="#565c58"
                 android:textColor="@color/white"
                 android:text="IMPORT"/>
