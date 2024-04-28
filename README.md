@@ -1,6 +1,6 @@
 # Interactive Code Playgrounds - App
 
-A mobile app used to show [ICP slides](https://github.com/Iron16Bit/icp-bundle) on mobile devices.
+A mobile app used to show [ICP slides](https://lucademenego99.github.io/icp-slides/#/) on mobile devices.
 
 ## Usage:
 
@@ -32,3 +32,8 @@ If we only use Javascript and C++, we can replace this with:
 ```
 
 This allows to make the package with languages smaller.
+
+## Remarks:
+
+In order to use the editors with C++, Java and Python the browser must support SharedWorkers. At the moment, no mobile browser supports them except for Firefox. It is still possible to use ICP with other browsers, but these languages won't be functional.
+Additionally, these languages are quite heavy. Mobile devices with less than 2GB of RAM won't be able to run them. Other devices might need up to 1 minute to initialize the environment, but will then compile in quite reasonable times.
