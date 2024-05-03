@@ -4,7 +4,7 @@ A mobile app used to show [ICP slides](https://lucademenego99.github.io/icp-slid
 
 ## Installation:
 
-The `\dist` folder contains a zip file with 2 APKs:
+The `/dist` folder contains a zip file with 2 APKs:
 - The icp_app itself
 - [Codeboard](https://github.com/gazlaws-dev/codeboard), an alternative keyboard with easier access to useful symbols for programming and a fully working backspace button. The latter is needed as the default virtual keyboard fires a different key event compared to a physical keyboard, which isn't recognized by the mobile browser and Codemirror 
 
