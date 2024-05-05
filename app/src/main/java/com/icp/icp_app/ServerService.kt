@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
+// A service which allows to keep the local http server open in background
 
 class ServerService : Service() {
 

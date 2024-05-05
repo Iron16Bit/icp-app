@@ -18,6 +18,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class CopyFromAssets {
+
+    // Copies from assets
     void copyAsset(String filename, String destDir, String subDir, Context context) {
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + destDir;
         File dir = new File(dirPath);

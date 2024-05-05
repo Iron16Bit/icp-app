@@ -36,17 +36,17 @@
         </service>
 
         <activity
-            android:name=".MainActivity3"
+            android:name=".ShowSlides"
             android:exported="false"
             android:label="@string/title_activity_main3"
             android:theme="@style/Theme.Icpapp" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".ImportLanguages"
             android:exported="false"
             android:label="@string/title_activity_main2"
             android:theme="@style/Theme.Icpapp" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ImportSlides"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

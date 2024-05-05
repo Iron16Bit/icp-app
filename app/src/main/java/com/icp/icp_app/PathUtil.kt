@@ -12,6 +12,8 @@ import java.net.URISyntaxException
 /**
  * Created by Aki on 1/7/2017.
  */
+
+// This class is needed to import files from local storage in older devices
 object PathUtil {
     /*
      * Gets the file path of the given Uri.
