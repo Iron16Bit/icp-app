@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
-
+// The info pop-up
 class PopUpFragment : DialogFragment() {
 
     override fun onCreateView(

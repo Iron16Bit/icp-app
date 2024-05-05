@@ -1,13 +1,11 @@
 package com.icp.icp_app
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -20,11 +18,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
-class MainActivity3 : AppCompatActivity() {
-    val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
+// The third page of the app, opens the slides in the browser
+
+class ShowSlides : AppCompatActivity() {
 
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
@@ -93,7 +90,7 @@ class MainActivity3 : AppCompatActivity() {
         prev.setOnClickListener{
             val intentMain = Intent(
                 this,
-                MainActivity2::class.java
+                ImportLanguages::class.java
             )
             this.startActivity(intentMain)
         }

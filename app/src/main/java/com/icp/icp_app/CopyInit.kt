@@ -8,6 +8,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
+// Utility class used to copy the icp_bundle.zip file from assets to local storage and unpack it
 class CopyInit {
     fun copy(context: Context) {
         val copy = CopyFromAssets()

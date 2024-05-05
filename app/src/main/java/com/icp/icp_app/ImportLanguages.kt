@@ -1,9 +1,6 @@
 package com.icp.icp_app
 
-import android.Manifest
-import android.app.ActivityOptions
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -18,12 +15,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import java.io.File
 
-class MainActivity2 : AppCompatActivity() {
-    val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
+// The second page of the app, used to import languages from local storage
+
+class ImportLanguages : AppCompatActivity() {
 
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
@@ -57,6 +53,8 @@ class MainActivity2 : AppCompatActivity() {
         }
         return false
     }
+
+    // Updates the TextView with all the currently available languages
     private fun updateAvailableLanguages() {
         val textView = findViewById<TextView>(R.id.AvailableLanguages)
         val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
@@ -74,6 +72,7 @@ class MainActivity2 : AppCompatActivity() {
         textView.text = text
     }
 
+    // Allows to choose a language from local storage
     var Language: String? = null
     private val getContentLanguage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
@@ -93,12 +92,14 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
+    // The import button goes from grey to colored
     private fun updateColor(btn: Button?) {
         if (Language != null) {
             btn?.background?.setTint(Color.parseColor("#604D9B"))
         }
     }
 
+    // Scans the index.html for all the languages needed to make the slides work
     private fun getLanguagesInSlides() {
         val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/index.html"
         val htmlFile = File(path)
@@ -130,6 +131,7 @@ class MainActivity2 : AppCompatActivity() {
         textView.text = text
     }
 
+    // Checks if all the needed languages are contained in the available langauges
     private fun checkAvailability(): Boolean {
         val available = findViewById<TextView>(R.id.AvailableLanguages).text
         val needed = findViewById<TextView>(R.id.NeededLanguages).text
@@ -157,6 +159,7 @@ class MainActivity2 : AppCompatActivity() {
 
                 val path = Language!!.split("/")
                 val fileName = path[path.lastIndex]
+                // Since langauges are distributed through .zip files, at least checks if the selected file is a zip
                 val regex = ".*.zip".toRegex()
 
                 if (fileName.contains(regex)) {
@@ -183,9 +186,10 @@ class MainActivity2 : AppCompatActivity() {
         next.setOnClickListener{
             val intentMain = Intent(
                 this,
-                MainActivity3::class.java
+                ShowSlides::class.java
             )
 
+            // Doesn't allow to move to the next page if the needed languages haven't been imported
             if (checkAvailability()) {
                 this.startActivity(intentMain)
             } else {
@@ -197,7 +201,7 @@ class MainActivity2 : AppCompatActivity() {
         prev.setOnClickListener{
             val intentMain = Intent(
                 this,
-                MainActivity::class.java
+                ImportSlides::class.java
             )
             this.startActivity(intentMain)
         }

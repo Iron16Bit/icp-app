@@ -1,11 +1,8 @@
 package com.icp.icp_app
 
 import PathUtil
-import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -20,12 +17,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import java.io.File
 
+// The first page of the app, is used to select and import slides from local storage
 
-class MainActivity : AppCompatActivity() {
+class ImportSlides : AppCompatActivity() {
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
         val permissions = Permissions()
@@ -62,6 +58,7 @@ class MainActivity : AppCompatActivity() {
     private var sharedPref: SharedPreferences? = null
     private var HTML: String? = getLastHtml()
 
+    // Allows to select a file from local storage
     private val getContentHTML = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {  // Check if Oreo (8) is good or it should be reduced to Marshmallow (6)
             HTML = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -84,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Shows the last imported HTML, allowing the user to remember which slides would currently be shown
     private fun getLastHtml(): String? {
         if (sharedPref?.contains("selected_html") == true) {
             val lastHtml = sharedPref!!.getString("selected_html", null)
@@ -138,9 +136,9 @@ class MainActivity : AppCompatActivity() {
                     editor.apply()
                 }
 
-                Toast.makeText(this@MainActivity, "Imported HTML", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ImportSlides, "Imported HTML", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this@MainActivity, "No HTML has been selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ImportSlides, "No HTML has been selected", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -153,9 +151,10 @@ class MainActivity : AppCompatActivity() {
         next.setOnClickListener{
             val intentMain = Intent(
                 this,
-                MainActivity2::class.java
+                ImportLanguages::class.java
             )
 
+            // Doesn't allow to move to the next page if no index.html has been imported
             val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
             val indexFile = File(dstString + "index.html")
             if (indexFile.exists()) {

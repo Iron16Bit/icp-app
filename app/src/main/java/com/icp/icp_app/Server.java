@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import fi.iki.elonen.NanoHTTPD;
 
+// Simple http local server that serves the index.html and all the files it requests from thr /MyFiles dir
+
 public class Server extends NanoHTTPD {
     private boolean active;
     public Server() {
