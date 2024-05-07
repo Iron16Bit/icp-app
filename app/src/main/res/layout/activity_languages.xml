@@ -97,7 +97,7 @@
                         android:textColor="#d6b9fa"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="NEEDED:"/>
+                        android:text="NEEDED LANGUAGES:"/>
 
                     <TextView
                         android:id="@+id/NeededLanguages"
@@ -107,31 +107,6 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="5dp"
                         android:layout_below="@id/NeededLanguagesTitle"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:text="test"/>
-
-                    <TextView
-                        android:id="@+id/AvailableLanguagesTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:textColor="#ebb9fa"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:text="AVAILABLE:"/>
-
-                    <TextView
-                        android:id="@+id/AvailableLanguages"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_below="@id/AvailableLanguagesTitle"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:text="test"/>

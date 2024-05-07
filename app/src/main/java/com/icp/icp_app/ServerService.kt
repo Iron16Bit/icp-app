@@ -29,7 +29,7 @@ class ServerService : Service() {
     private fun start() {
         val builder = NotificationCompat.Builder(this, "running_channel")
             .setSmallIcon(R.drawable.icon)
-            .setContentTitle("Local server running")
+            .setContentTitle("App running in background")
 
         val stopSelf = Intent(this, ServerService::class.java)
         stopSelf.setAction(Actions.STOP.toString())

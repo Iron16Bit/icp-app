@@ -21,6 +21,10 @@ import java.io.File
 
 class ImportLanguages : AppCompatActivity() {
 
+    // Strings containing, for each language, language+\n
+    var availableLang = "";
+    var neededLang = "";
+
     // Function used to check if needed permissions have been granted. If not, requests them
     private fun checkAndRequestPermissions(): Boolean {
         val permissions = Permissions()
@@ -56,20 +60,16 @@ class ImportLanguages : AppCompatActivity() {
 
     // Updates the TextView with all the currently available languages
     private fun updateAvailableLanguages() {
-        val textView = findViewById<TextView>(R.id.AvailableLanguages)
+        availableLang = "";
         val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
-
-        var text = ""
 
         val availableFiles = folder.list()
         for (f in availableFiles!!) {
             if (f.endsWith(".js") && !f.startsWith("reveal")) {
                 val tmp = f.split(".")
-                text += "- " + tmp[0] + "\n"
+                availableLang += tmp[0] + "\n"
             }
         }
-
-        textView.text = text
     }
 
     // Allows to choose a language from local storage
@@ -101,6 +101,8 @@ class ImportLanguages : AppCompatActivity() {
 
     // Scans the index.html for all the languages needed to make the slides work
     private fun getLanguagesInSlides() {
+        updateAvailableLanguages()
+        neededLang = ""
         val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/index.html"
         val htmlFile = File(path)
 
@@ -120,23 +122,45 @@ class ImportLanguages : AppCompatActivity() {
                 val name = split3[0].drop(1)
 
                 if (name != "reveal") {
-                    text += "- $name\n"
+                    val available = checkAvailability(name);
+                    if (available) {
+                        text += "- $name.iife.js  ✅\n"
+                    } else {
+                        text += "- $name.iife.js  ❌\n"
+                    }
+                    neededLang += name + "\n"
                 }
             }
         } else {
-            text += "- None\n"
+            text += "(None)\n"
         }
 
         val textView = findViewById<TextView>(R.id.NeededLanguages)
         textView.text = text
     }
 
-    // Checks if all the needed languages are contained in the available langauges
-    private fun checkAvailability(): Boolean {
-        val available = findViewById<TextView>(R.id.AvailableLanguages).text
-        val needed = findViewById<TextView>(R.id.NeededLanguages).text
 
-        return available.contains(needed)
+    // Checks if a single specific langauge is available
+    private fun checkAvailability(lang: String): Boolean {
+        val allAvailableLanguages = availableLang.split("\n")
+        for (l in allAvailableLanguages) {
+            if (lang == l) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Checks if all the needed languages are available
+    private fun checkFullAvailability(): Boolean {
+        val allNeededLanguages = neededLang.split("\n")
+        for (l in allNeededLanguages) {
+            val availability = checkAvailability(l)
+            if (!availability) {
+                return false
+            }
+        }
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,7 +183,7 @@ class ImportLanguages : AppCompatActivity() {
 
                 val path = Language!!.split("/")
                 val fileName = path[path.lastIndex]
-                // Since langauges are distributed through .zip files, at least checks if the selected file is a zip
+                // Since languages are distributed through .zip files, at least checks if the selected file is a zip
                 val regex = ".*.zip".toRegex()
 
                 if (fileName.contains(regex)) {
@@ -174,6 +198,7 @@ class ImportLanguages : AppCompatActivity() {
                     Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show()
 
                     updateAvailableLanguages()
+                    getLanguagesInSlides()
                 } else {
                     Toast.makeText(this, "Selected file not supported", Toast.LENGTH_SHORT).show()
                 }
@@ -190,7 +215,7 @@ class ImportLanguages : AppCompatActivity() {
             )
 
             // Doesn't allow to move to the next page if the needed languages haven't been imported
-            if (checkAvailability()) {
+            if (checkFullAvailability()) {
                 this.startActivity(intentMain)
             } else {
                 Toast.makeText(this, "Needed languages not imported", Toast.LENGTH_SHORT).show()
