@@ -6,6 +6,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,47 +20,40 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.w3c.dom.Text
 
 // The third page of the app, opens the slides in the browser
 
 class ShowSlides : AppCompatActivity() {
 
-    // Function used to check if needed permissions have been granted. If not, requests them
-    private fun checkAndRequestPermissions(): Boolean {
-        val permissions = Permissions()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+    private var sharedPref: SharedPreferences? = null
 
-            permissions.checkAndRequestPermissions(this)
+    private fun updateAllColors() {
+        if (sharedPref?.contains("actual_theme") == true) {
+            val theme = sharedPref!!.getString("actual_theme", null)
 
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            permissions.checkAndRequestPermissions(this)
+            val background = findViewById<RelativeLayout>(R.id.Background)
+            background.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#26364E" } else { "#ffffff" }))
 
-            if (!Environment.isExternalStorageManager()) {
-                val intent: Intent =
-                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                        .setData(Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
+            val titleShow = findViewById<TextView>(R.id.TitleShow)
+            titleShow.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
 
-            return true
-        } else {
-            permissions.checkAndRequestPermissions(this)
+            val text = findViewById<TextView>(R.id.or)
+            text.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
 
-            if (!Environment.isExternalStorageManager()) {
-                val intent: Intent =
-                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                        .setData(Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
+            val buttonBg = findViewById<Button>(R.id.open)
+            buttonBg.background.setTint(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
 
-            return true
+            val containerBg = findViewById<RelativeLayout>(R.id.infoBackground)
+            containerBg.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
         }
-        return false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPref = this.getSharedPreferences("my_pref", MODE_PRIVATE)
         setContentView(R.layout.activity_show_slides)
+        updateAllColors()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("running_channel", "Running Notification", NotificationManager.IMPORTANCE_DEFAULT)
@@ -101,16 +96,13 @@ class ShowSlides : AppCompatActivity() {
             showPopUp.show((this as AppCompatActivity).supportFragmentManager, "showPopUp")
         }
 
-        val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
-        permissionsButton.setOnClickListener {
-            val permissions = Permissions()
-            val permissionState = permissions.checkPermissions(this)
-            if (permissionState) {
-                Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
-            } else {
-                checkAndRequestPermissions()
-            }
-            permissions.initDir(this)
+        val settingsButton = findViewById<ImageButton>(R.id.Permissions)
+        settingsButton.setOnClickListener {
+            val intentMain = Intent(
+                this,
+                com.icp.icp_app.Settings::class.java
+            )
+            this.startActivity(intentMain)
         }
 
         val startServer = findViewById<Button>(R.id.server)

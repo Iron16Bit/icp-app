@@ -1,6 +1,7 @@
 package com.icp.icp_app
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -24,39 +25,6 @@ class ImportLanguages : AppCompatActivity() {
     // Strings containing, for each language, language+\n
     var availableLang = "";
     var neededLang = "";
-
-    // Function used to check if needed permissions have been granted. If not, requests them
-    private fun checkAndRequestPermissions(): Boolean {
-        val permissions = Permissions()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-
-            permissions.checkAndRequestPermissions(this)
-
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            permissions.checkAndRequestPermissions(this)
-
-            if (!Environment.isExternalStorageManager()) {
-                val intent: Intent =
-                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                        .setData(Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
-
-            return true
-        } else {
-            permissions.checkAndRequestPermissions(this)
-
-            if (!Environment.isExternalStorageManager()) {
-                val intent: Intent =
-                    Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                        .setData(Uri.parse("package:$packageName"))
-                startActivity(intent)
-            }
-
-            return true
-        }
-        return false
-    }
 
     // Updates the TextView with all the currently available languages
     private fun updateAvailableLanguages() {
@@ -121,7 +89,7 @@ class ImportLanguages : AppCompatActivity() {
                 val split3 = split2[0].split(".")
                 val name = split3[0].drop(1)
 
-                if (name != "reveal") {
+                if (name != "reveal" && !name.contains("cdn")) {
                     val available = checkAvailability(name);
                     if (available) {
                         text += "- $name.iife.js  ✅\n"
@@ -135,12 +103,16 @@ class ImportLanguages : AppCompatActivity() {
             text += "(None)\n"
         }
 
+        if (text.isEmpty()) {
+            text += "(None)\n"
+        }
+
         val textView = findViewById<TextView>(R.id.NeededLanguages)
         textView.text = text
     }
 
 
-    // Checks if a single specific langauge is available
+    // Checks if a single specific language is available
     private fun checkAvailability(lang: String): Boolean {
         val allAvailableLanguages = availableLang.split("\n")
         for (l in allAvailableLanguages) {
@@ -163,9 +135,43 @@ class ImportLanguages : AppCompatActivity() {
         return true
     }
 
+    private var sharedPref: SharedPreferences? = null
+
+    private fun updateAllColors() {
+        if (sharedPref?.contains("actual_theme") == true) {
+            val theme = sharedPref!!.getString("actual_theme", null)
+
+            val background = findViewById<RelativeLayout>(R.id.Background)
+            background.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#26364E" } else { "#ffffff" }))
+
+            val titleLanguages = findViewById<TextView>(R.id.TitleLanguages)
+            titleLanguages.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+
+            val containerBg = findViewById<RelativeLayout>(R.id.ContainerBackground)
+            containerBg.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
+
+            val title1 = findViewById<TextView>(R.id.NeededLanguagesTitle)
+            title1.setTextColor(Color.parseColor(if (theme == "dark") { "#d6b9fa" } else { "#a15afa" }))
+
+            val text1 = findViewById<TextView>(R.id.NeededLanguages)
+            text1.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+
+            val containerBg1 = findViewById<RelativeLayout>(R.id.ContainerBackground1)
+            containerBg1.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
+
+            val title2 = findViewById<TextView>(R.id.importTitle)
+            title2.setTextColor(Color.parseColor(if (theme == "dark") { "#bbb9fa" } else { "#5c57ff" }))
+
+            val text2 = findViewById<TextView>(R.id.importInfo)
+            text2.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPref = this.getSharedPreferences("my_pref", MODE_PRIVATE)
         setContentView(R.layout.activity_languages)
+        updateAllColors()
 
         getLanguagesInSlides()
         updateAvailableLanguages()
@@ -237,16 +243,13 @@ class ImportLanguages : AppCompatActivity() {
             showPopUp.show((this as AppCompatActivity).supportFragmentManager, "showPopUp")
         }
 
-        val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
-        permissionsButton.setOnClickListener {
-            val permissions = Permissions()
-            val permissionState = permissions.checkPermissions(this)
-            if (permissionState) {
-                Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
-            } else {
-                checkAndRequestPermissions()
-            }
-            permissions.initDir(this)
+        val settingsButton = findViewById<ImageButton>(R.id.Permissions)
+        settingsButton.setOnClickListener {
+            val intentMain = Intent(
+                this,
+                com.icp.icp_app.Settings::class.java
+            )
+            this.startActivity(intentMain)
         }
     }
 }

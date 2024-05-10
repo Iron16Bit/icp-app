@@ -96,11 +96,43 @@ class ImportSlides : AppCompatActivity() {
         return null
     }
 
+    private fun initShredPrefTheme() {
+        if (sharedPref?.contains("actual_theme") == false) {
+            val editor = sharedPref?.edit()
+            if (editor != null) {
+                editor.putString("actual_theme", "dark")
+                editor.apply()
+            }
+        }
+    }
+
+    private fun updateAllColors() {
+        if (sharedPref?.contains("actual_theme") == true) {
+            val theme = sharedPref!!.getString("actual_theme", null)
+
+            val background = findViewById<RelativeLayout>(R.id.Background)
+            background.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#26364E" } else { "#ffffff" }))
+
+            val titleSlides = findViewById<TextView>(R.id.TitleSlides)
+            titleSlides.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+
+            val containerBg = findViewById<RelativeLayout>(R.id.ContainerBackground)
+            containerBg.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
+
+            val title = findViewById<TextView>(R.id.importTitle)
+            title.setTextColor(Color.parseColor(if (theme == "dark") { "#bbb9fa" } else { "#5c57ff" }))
+
+            val text = findViewById<TextView>(R.id.importInfo)
+            text.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sharedPref = this.getSharedPreferences("my_pref", MODE_PRIVATE)
         setContentView(R.layout.activity_slides)
+        updateAllColors()
 
         // Unused value needed to actually show the last selected HTML
         val tmp = getLastHtml()
@@ -110,6 +142,8 @@ class ImportSlides : AppCompatActivity() {
         if (checkAndRequestPermissions()) {
             permissions.initDir(this)
         }
+
+        initShredPrefTheme()
 
         val info = findViewById<ImageButton>(R.id.Info)
         info.setOnClickListener{
@@ -164,12 +198,13 @@ class ImportSlides : AppCompatActivity() {
             }
         }
 
-        val permissionsButton = findViewById<ImageButton>(R.id.Permissions)
-        permissionsButton.setOnClickListener {
-            if (checkAndRequestPermissions()) {
-                Toast.makeText(this, "Permissions already granted", Toast.LENGTH_SHORT).show()
-            }
-            permissions.initDir(this)
+        val settingsButton = findViewById<ImageButton>(R.id.Permissions)
+        settingsButton.setOnClickListener {
+            val intentMain = Intent(
+                this,
+                com.icp.icp_app.Settings::class.java
+            )
+            this.startActivity(intentMain)
         }
     }
 

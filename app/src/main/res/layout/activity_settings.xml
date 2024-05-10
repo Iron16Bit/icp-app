@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Settings">
+
+    <RelativeLayout
+        android:id="@+id/Background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#26364E">
+
+        <TextView
+            android:id="@+id/Title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GENERAL:"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/Container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#5a565c"
+        android:layout_margin="8dp"
+        android:layout_below="@id/Title1">
+
+        <RelativeLayout
+            android:id="@+id/ContainerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="#182436">
+
+            <TextView
+                android:id="@+id/PermissionsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/white"
+                android:text="• Request again permissions"/>
+
+            <Button
+                android:id="@+id/Permissions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/PermissionsTitle"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="#604D9B"
+                android:textColor="@color/white"
+                android:alpha="0.9"
+                android:text="Request Permissions"/>
+
+            <TextView
+                android:id="@+id/DirectoryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Permissions"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/white"
+                android:text="• Cleans app directory, removing all imported files"/>
+
+            <Button
+                android:id="@+id/Directory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/DirectoryTitle"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#604D9B"
+                android:textColor="@color/white"
+                android:alpha="0.9"
+                android:text="Reinit Directory"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/Title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Container"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="STYLE:"/>
+
+        <Button
+            android:id="@+id/Theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Title2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="#604D9B"
+            android:textColor="@color/white"
+            android:alpha="0.9"
+            android:text="Switch App Theme"/>
+
+        <ImageButton
+            android:id="@+id/Back"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:scaleX="-1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow"
+            android:alpha="0.5"/>
+
+    </RelativeLayout>
+
+</ScrollView>

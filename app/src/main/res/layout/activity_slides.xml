@@ -8,6 +8,7 @@
     tools:context=".ImportSlides">
     
     <RelativeLayout
+        android:id="@+id/Background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#26364E">
@@ -91,6 +92,7 @@
                 android:layout_margin="8dp">
 
                 <RelativeLayout
+                    android:id="@+id/ContainerBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
