@@ -6,7 +6,7 @@ A mobile app used to show [ICP slides](https://lucademenego99.github.io/icp-slid
 
 The `/dist` folder contains a zip file with 2 APKs:
 - The icp_app itself
-- [Codeboard](https://github.com/gazlaws-dev/codeboard), an alternative keyboard with easier access to useful symbols for programming and a fully working backspace button. The latter is needed as the default virtual keyboard fires a different key event compared to a physical keyboard, which isn't recognized by the mobile browser and Codemirror 
+- [Codeboard](https://github.com/gazlaws-dev/codeboard), an alternative lightweight keyboard with easier access to useful symbols for programming and a fully working backspace button. The latter is needed when reproducing the slides in Firefox, which has compatibility problems with some keyboards
 
 ## Usage:
 
@@ -42,4 +42,5 @@ This allows to make the package with languages smaller.
 ## Remarks:
 
 In order to use the editors with C++, Java and Python the browser must support SharedWorkers. At the moment, no mobile browser supports them except for Firefox. It is still possible to use ICP with other browsers, but these languages won't be functional.
+
 Additionally, these languages are quite heavy. Mobile devices with less than 2GB of RAM won't be able to run them. Other devices might need up to 1 minute to initialize the environment, but will then compile in quite reasonable times.
