@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     tools:context=".Settings">
 
@@ -98,18 +99,111 @@
             android:textStyle="bold"
             android:text="STYLE:"/>
 
-        <Button
-            android:id="@+id/Theme"
-            android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/ContainerStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#5a565c"
+        android:layout_margin="8dp"
+        android:layout_below="@id/Title2">
+
+        <RelativeLayout
+            android:id="@+id/ContainerBackgroundStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Title2"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginBottom="70dp"
-            android:backgroundTint="#604D9B"
-            android:textColor="@color/white"
-            android:alpha="0.9"
-            android:text="Switch App Theme"/>
+            android:layout_margin="2dp"
+            android:background="#182436">
+
+            <Button
+                android:id="@+id/Theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:backgroundTint="#604D9B"
+                android:textColor="@color/white"
+                android:alpha="0.9"
+                android:text="Switch App Theme"/>
+
+            <TextView
+                android:id="@+id/SizeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/Theme"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/white"
+                android:text="• Change the text size of the editors"/>
+
+            <Button
+                android:id="@+id/SizeMinus"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/SizeTitle"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="70dp"
+                android:backgroundTint="#604D9B"
+                app:cornerRadius="0dp"
+                android:alpha="0.9"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="-"/>
+
+            <RelativeLayout
+                android:id="@+id/ContainerNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#290042"
+                android:layout_marginTop="9dp"
+                android:layout_marginStart="2dp"
+                android:layout_below="@id/SizeTitle"
+                android:layout_toEndOf="@id/SizeMinus">
+
+                <RelativeLayout
+                    android:id="@+id/ContainerBackgroundNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:background="#341352">
+
+                    <TextView
+                        android:id="@+id/TextSize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="20"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            <Button
+                android:id="@+id/SizePlus"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/SizeTitle"
+                android:layout_toEndOf="@id/ContainerNumber"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="70dp"
+                android:layout_marginStart="2dp"
+                android:backgroundTint="#604D9B"
+                app:cornerRadius="0dp"
+                android:alpha="0.9"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="+"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
         <ImageButton
             android:id="@+id/Back"

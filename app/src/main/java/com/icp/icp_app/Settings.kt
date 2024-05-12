@@ -5,17 +5,18 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import java.io.File
+import java.io.PrintWriter
+
 
 class Settings : AppCompatActivity() {
 
@@ -75,13 +76,62 @@ class Settings : AppCompatActivity() {
 
             val text2 = findViewById<TextView>(R.id.DirectoryTitle)
             text2.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+
+            val containerBg2 = findViewById<RelativeLayout>(R.id.ContainerBackgroundStyle)
+            containerBg2.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
+
+            val title3 = findViewById<TextView>(R.id.SizeTitle)
+            title3.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
+
+            val containerBg3 = findViewById<RelativeLayout>(R.id.ContainerNumber)
+            containerBg3.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#290042" } else { "#ac5eff" }))
+
+            val containerBg4 = findViewById<RelativeLayout>(R.id.ContainerBackgroundNumber)
+            containerBg4.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#341352" } else { "#ad86fc" }))
+
+            val text3 = findViewById<TextView>(R.id.TextSize)
+            text3.setTextColor(Color.parseColor(if (theme == "dark") { "#ffffff" } else { "#000000" }))
         }
     }
+
+    private fun updateText() {
+        val textSize = findViewById<TextView>(R.id.TextSize)
+        val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/textSize.json"
+        val sizeJson = File(path)
+
+        if (sizeJson.exists()) {
+            val jsonContent = sizeJson.readText(Charsets.UTF_8)
+            textSize.text = jsonContent
+        } else {
+            textSize.text = "?"
+        }
+    }
+
+    private fun changeSize(op: Int) {
+        val textSize = findViewById<TextView>(R.id.TextSize)
+        val path = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/textSize.json"
+        val sizeJson = File(path)
+
+        if (sizeJson.exists()) {
+            val jsonContent = sizeJson.readText(Charsets.UTF_8)
+            var newSize = jsonContent.toInt()
+            if (op == 0) newSize+=1 else newSize-=1
+            if (newSize < 1) newSize=1
+            val writer = PrintWriter(sizeJson)
+            writer.print(newSize.toString())
+            writer.close()
+            updateText()
+        } else {
+            textSize.text = "?"
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = this.getSharedPreferences("my_pref", MODE_PRIVATE)
         setContentView(R.layout.activity_settings)
         updateAllColors()
+        updateText()
 
         val permissionsButton = findViewById<Button>(R.id.Permissions)
         permissionsButton.setOnClickListener {
@@ -134,6 +184,16 @@ class Settings : AppCompatActivity() {
                 ImportSlides::class.java
             )
             this.startActivity(intentMain)
+        }
+
+        val plusButton = findViewById<Button>(R.id.SizePlus)
+        plusButton.setOnClickListener {
+            changeSize(0)
+        }
+
+        val minusButton = findViewById<Button>(R.id.SizeMinus)
+        minusButton.setOnClickListener {
+            changeSize(1)
         }
     }
 }

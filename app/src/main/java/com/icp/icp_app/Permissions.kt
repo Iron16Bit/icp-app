@@ -157,7 +157,7 @@ class Permissions {
         if (f.exists()) {
             val files = f.list()
             if (files != null) {
-                if (files.size < 5) {
+                if (files.size < 6) {
                     val copy = CopyInit()
                     copy.copy(context)
                     Toast.makeText(context, "App successfully initialized!", Toast.LENGTH_SHORT).show()
