@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
@@ -250,6 +251,10 @@ class ImportLanguages : AppCompatActivity() {
                 com.icp.icp_app.Settings::class.java
             )
             this.startActivity(intentMain)
+        }
+
+        val callback = onBackPressedDispatcher.addCallback(this) {
+            prev.callOnClick()
         }
     }
 }

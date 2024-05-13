@@ -19,6 +19,7 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import org.w3c.dom.Text
 
@@ -115,6 +116,10 @@ class ShowSlides : AppCompatActivity() {
             openBrowser.visibility = VISIBLE
             findViewById<RelativeLayout>(R.id.infoContainer).visibility = VISIBLE
             findViewById<TextView>(R.id.or).visibility = VISIBLE
+        }
+
+        val callback = onBackPressedDispatcher.addCallback(this) {
+            prev.callOnClick()
         }
     }
 }

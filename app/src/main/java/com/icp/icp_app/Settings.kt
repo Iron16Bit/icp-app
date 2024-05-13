@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 import java.io.PrintWriter
@@ -194,6 +195,10 @@ class Settings : AppCompatActivity() {
         val minusButton = findViewById<Button>(R.id.SizeMinus)
         minusButton.setOnClickListener {
             changeSize(1)
+        }
+
+        val callback = onBackPressedDispatcher.addCallback(this) {
+            prev.callOnClick()
         }
     }
 }
