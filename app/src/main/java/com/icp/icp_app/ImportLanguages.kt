@@ -81,6 +81,7 @@ class ImportLanguages : AppCompatActivity() {
 
             val htmlContent = htmlFile.readText(Charsets.UTF_8)
 
+            // We have to scan for all the imports of some sources in the html file, and from them extract only the name of those that import supports for languages
             val regex = "<script src=.*></script>".toRegex()
             val scripts = regex.findAll(htmlContent)
 

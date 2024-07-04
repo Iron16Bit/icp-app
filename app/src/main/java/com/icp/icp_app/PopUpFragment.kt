@@ -157,7 +157,9 @@ class PopUpFragment : DialogFragment() {
         updateAllColors()
 
         val text1 = view.findViewById<TextView>(R.id.PText1)
-        val textString1 = "Select the set of ICP slides to show from local storage. Then press import"
+        val textString1 = "Select the set of ICP slides to show from local storage. Then press import\n" +
+                "\n" +
+                "NOTE: The file must be selected by browsing through the memory of the device by clicking on the name of the device in the file selector"
         text1.text = textString1
 
         val text2 = view.findViewById<TextView>(R.id.PText2)

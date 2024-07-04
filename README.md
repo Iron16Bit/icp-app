@@ -43,4 +43,4 @@ This allows to make the package with languages smaller.
 
 In order to use the editors with C++, Java and Python the browser must support SharedWorkers. At the moment, no mobile browser supports them except for Firefox. It is still possible to use ICP with other browsers, but these languages won't be functional.
 
-Additionally, these languages are quite heavy. Mobile devices with less than 2GB of RAM won't be able to run them. Other devices might need up to 1 minute to initialize the environment, but will then compile in quite reasonable times.
+Additionally, C++ is quite heavy. Mobile devices with less than 2GB of RAM won't be able to run it. Other devices might need up to 1 minute to initialize the environment (initialization time before being able to compile the code).

@@ -155,23 +155,30 @@ class ImportSlides : AppCompatActivity() {
         val importHTML = findViewById<Button>(R.id.ImportHTML)
         importHTML.setOnClickListener {
             if (HTML != null) {
-                val copy = CopyInit()
-                val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
+                // Kind of a strange check. If a file isn't selected by browsing through the memory of the device, it doesn't return an actual path to that file
+                val regex = ".*.html".toRegex()
+                if (!HTML!!.contains((regex))) {
+                    Toast.makeText(this@ImportSlides, "Select file by browsing through memory", Toast.LENGTH_SHORT).show()
+                } else {
+                    val copy = CopyInit()
+                    val dstString =
+                        Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                val indexFile = File(dstString + "index.html")
-                if (indexFile.exists()) {
-                    indexFile.delete()
+                    val indexFile = File(dstString + "index.html")
+                    if (indexFile.exists()) {
+                        indexFile.delete()
+                    }
+
+                    copy.copyExternal(HTML!!, dstString, "index.html")
+
+                    val editor = sharedPref?.edit()
+                    if (editor != null) {
+                        editor.putString("selected_html", HTML)
+                        editor.apply()
+                    }
+
+                    Toast.makeText(this@ImportSlides, "Imported HTML", Toast.LENGTH_SHORT).show()
                 }
-
-                copy.copyExternal(HTML!!, dstString, "index.html")
-
-                val editor = sharedPref?.edit()
-                if (editor != null) {
-                    editor.putString("selected_html", HTML)
-                    editor.apply()
-                }
-
-                Toast.makeText(this@ImportSlides, "Imported HTML", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@ImportSlides, "No HTML has been selected", Toast.LENGTH_SHORT).show()
             }
