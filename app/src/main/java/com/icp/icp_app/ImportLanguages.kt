@@ -9,14 +9,22 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 
 // The second page of the app, used to import languages from local storage
@@ -185,34 +193,43 @@ class ImportLanguages : AppCompatActivity() {
 
         val importLanguage = findViewById<Button>(R.id.ImportLanguage)
         importLanguage.setOnClickListener {
-            if (Language != null) {
-                val copy = CopyInit()
-                val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                val path = Language!!.split("/")
-                val fileName = path[path.lastIndex]
-                // Since languages are distributed through .zip files, at least checks if the selected file is a zip
-                val regex = ".*.zip".toRegex()
+            Thread(Runnable {
+                val loading = findViewById<ProgressBar>(R.id.loading_progress_xml)
+                runOnUiThread { loading.isVisible = true
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);}
+                if (Language != null) {
+                    val copy = CopyInit()
+                    val dstString = Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
 
-                if (fileName.contains(regex)) {
-                    copy.copyExternal(Language!!, dstString, "export_languages.zip")
-                    val zip =
-                        File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")
-                    val destZip =
-                        File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
-                    CopyFromAssets.unzip(zip, destZip)
-                    zip.delete()
+                    val path = Language!!.split("/")
+                    val fileName = path[path.lastIndex]
+                    // Since languages are distributed through .zip files, at least checks if the selected file is a zip
+                    val regex = ".*.zip".toRegex()
 
-                    Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show()
+                    if (fileName.contains(regex)) {
+                        copy.copyExternal(Language!!, dstString, "export_languages.zip")
+                        val zip =
+                            File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/export_languages.zip")
+                        val destZip =
+                            File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
+                        CopyFromAssets.unzip(zip, destZip)
+                        zip.delete()
 
-                    updateAvailableLanguages()
-                    getLanguagesInSlides()
+                        runOnUiThread { Toast.makeText(this, "Languages imported!", Toast.LENGTH_SHORT).show() }
+
+                        updateAvailableLanguages()
+                        runOnUiThread { getLanguagesInSlides() }
+                    } else {
+                        runOnUiThread { Toast.makeText(this, "Selected file not supported", Toast.LENGTH_SHORT).show() }
+                    }
                 } else {
-                    Toast.makeText(this, "Selected file not supported", Toast.LENGTH_SHORT).show()
+                    runOnUiThread { Toast.makeText(this, "No language has been selected", Toast.LENGTH_SHORT).show() }
                 }
-            } else {
-                Toast.makeText(this, "No language has been selected", Toast.LENGTH_SHORT).show()
-            }
+                runOnUiThread { loading.isVisible = false
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)}
+            }).start()
         }
 
         val next = findViewById<ImageButton>(R.id.NextFromLanguages)
@@ -257,5 +274,9 @@ class ImportLanguages : AppCompatActivity() {
         val callback = onBackPressedDispatcher.addCallback(this) {
             prev.callOnClick()
         }
+    }
+
+    fun import() {
+
     }
 }
