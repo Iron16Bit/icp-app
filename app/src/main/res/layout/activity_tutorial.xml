@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Tutorial">
+
+    <RelativeLayout
+        android:id="@+id/Background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#26364E">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_margin="9dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#c683fc"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:text="TUTORIAL:" />
+
+        <Button
+            android:id="@+id/exit"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:text="x" />
+
+        <TextView
+            android:id="@+id/SubTitle1"
+            android:scrollbars = "vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="1. IMPORT SLIDES/LANGUAGES:" />
+
+        <RelativeLayout
+            android:id="@+id/Container1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SubTitle1"
+            android:background="#5a565c"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:id="@+id/SubContainer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="#2f4970">
+
+                <ImageView
+                    android:id="@+id/Image1"
+                    android:layout_height="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/tutorial1"/>
+
+                <TextView
+                    android:id="@+id/Text1"
+                    android:scrollbars = "vertical"
+                    android:layout_margin="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_below="@id/Image1"
+                    android:text="Files can't be selected from the 'Recent' screen as that doesn't correspond to their actual path"/>
+
+                <ImageView
+                    android:id="@+id/Image2"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="200dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Text1"
+                    android:src="@drawable/tutorial1_2"/>
+
+                <ImageView
+                    android:id="@+id/Image3"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="200dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Image2"
+                    android:src="@drawable/tutorial1_3"/>
+
+                <TextView
+                    android:id="@+id/Text2"
+                    android:scrollbars = "vertical"
+                    android:layout_margin="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_below="@id/Image3"
+                    android:text="Finally, the selected file has to be imported"/>
+
+                <ImageView
+                    android:id="@+id/Image4"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="200dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/Text2"
+                    android:src="@drawable/tutorial1_4"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/SubTitle2"
+            android:scrollbars = "vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Container1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="2. SHOW SLIDES:" />
+
+        <RelativeLayout
+            android:id="@+id/Container2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SubTitle2"
+            android:background="#5a565c"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp">
+
+            <RelativeLayout
+                android:id="@+id/SubContainer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="#2f4970">
+
+                <TextView
+                    android:id="@+id/Text3"
+                    android:scrollbars = "vertical"
+                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

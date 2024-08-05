@@ -154,6 +154,12 @@ class Settings : AppCompatActivity() {
             }
             val permissions = Permissions()
             permissions.initDir(this)
+
+            val editor = sharedPref?.edit()
+            if (editor != null) {
+                editor.putString("show_tutorial", "true")
+                editor.apply()
+            }
         }
 
         val themeButton = findViewById<Button>(R.id.Theme)
@@ -180,11 +186,20 @@ class Settings : AppCompatActivity() {
 
         val prev = findViewById<ImageButton>(R.id.Back)
         prev.setOnClickListener{
-            val intentMain = Intent(
-                this,
-                ImportSlides::class.java
-            )
-            this.startActivity(intentMain)
+            val tutorial = sharedPref!!.getString("show_tutorial", null)
+            if (tutorial == "false") {
+                val intentMain = Intent(
+                    this,
+                    ImportSlides::class.java
+                )
+                this.startActivity(intentMain)
+            } else {
+                val intentMain = Intent(
+                    this,
+                    Tutorial::class.java
+                )
+                this.startActivity(intentMain)
+            }
         }
 
         val plusButton = findViewById<Button>(R.id.SizePlus)

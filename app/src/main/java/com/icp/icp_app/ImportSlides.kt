@@ -10,14 +10,17 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.view.View.VISIBLE
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import java.io.File
 
 // The first page of the app, is used to select and import slides from local storage
@@ -154,34 +157,43 @@ class ImportSlides : AppCompatActivity() {
 
         val importHTML = findViewById<Button>(R.id.ImportHTML)
         importHTML.setOnClickListener {
-            if (HTML != null) {
-                // Kind of a strange check. If a file isn't selected by browsing through the memory of the device, it doesn't return an actual path to that file
-                val regex = ".*.html".toRegex()
-                if (!HTML!!.contains((regex))) {
-                    Toast.makeText(this@ImportSlides, "Select file by browsing through memory", Toast.LENGTH_SHORT).show()
+            Thread(Runnable {
+                val loading = findViewById<ProgressBar>(R.id.loading_progress_xml)
+                runOnUiThread { loading.isVisible = true
+                    getWindow().setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);}
+                if (HTML != null) {
+                    // Kind of a strange check. If a file isn't selected by browsing through the memory of the device, it doesn't return an actual path to that file
+                    val regex = ".*.html".toRegex()
+                    if (!HTML!!.contains((regex))) {
+                        runOnUiThread { Toast.makeText(this@ImportSlides, "Select file by browsing through memory", Toast.LENGTH_SHORT).show() }
+                    } else {
+                        val copy = CopyInit()
+                        val dstString =
+                            Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
+
+                        val indexFile = File(dstString + "index.html")
+                        if (indexFile.exists()) {
+                            indexFile.delete()
+                        }
+
+                        copy.copyExternal(HTML!!, dstString, "index.html")
+
+                        val editor = sharedPref?.edit()
+                        if (editor != null) {
+                            editor.putString("selected_html", HTML)
+                            editor.apply()
+                        }
+
+                        runOnUiThread { Toast.makeText(this@ImportSlides, "Imported HTML", Toast.LENGTH_SHORT).show() }
+                    }
                 } else {
-                    val copy = CopyInit()
-                    val dstString =
-                        Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/"
-
-                    val indexFile = File(dstString + "index.html")
-                    if (indexFile.exists()) {
-                        indexFile.delete()
-                    }
-
-                    copy.copyExternal(HTML!!, dstString, "index.html")
-
-                    val editor = sharedPref?.edit()
-                    if (editor != null) {
-                        editor.putString("selected_html", HTML)
-                        editor.apply()
-                    }
-
-                    Toast.makeText(this@ImportSlides, "Imported HTML", Toast.LENGTH_SHORT).show()
+                    runOnUiThread { Toast.makeText(this@ImportSlides, "No HTML has been selected", Toast.LENGTH_SHORT).show() }
                 }
-            } else {
-                Toast.makeText(this@ImportSlides, "No HTML has been selected", Toast.LENGTH_SHORT).show()
-            }
+                runOnUiThread { loading.isVisible = false
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)}
+            }).start()
         }
 
         val selectHTML = findViewById<Button>(R.id.SelectHTML)
