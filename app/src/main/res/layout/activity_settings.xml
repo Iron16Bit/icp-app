@@ -68,7 +68,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/white"
-                android:text="• Cleans app directory, removing all imported files"/>
+                android:text="• Cleans app directory, removing all imported files, resets all settings and shows again the tutorial"/>
 
             <Button
                 android:id="@+id/Directory"
@@ -81,7 +81,7 @@
                 android:backgroundTint="#604D9B"
                 android:textColor="@color/white"
                 android:alpha="0.9"
-                android:text="Reinit Directory"/>
+                android:text="Reset App"/>
 
             </RelativeLayout>
 
@@ -215,7 +215,8 @@
             android:background="?android:selectableItemBackground"
             android:scaleType="fitCenter"
             android:src="@drawable/arrow"
-            android:alpha="0.5"/>
+            android:tint="#604D9B"
+            android:alpha="0.9"/>
 
     </RelativeLayout>
 
