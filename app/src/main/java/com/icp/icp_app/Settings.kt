@@ -160,6 +160,12 @@ class Settings : AppCompatActivity() {
                 editor.putString("show_tutorial", "true")
                 editor.apply()
             }
+
+            val editor2 = sharedPref?.edit()
+            if (editor2 != null) {
+                editor2.putString("actual_theme", "dark")
+                editor2.apply()
+            }
         }
 
         val themeButton = findViewById<Button>(R.id.Theme)
