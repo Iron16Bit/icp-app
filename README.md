@@ -22,6 +22,8 @@ Once the desired languages have been built, a zip file can be found in `dist/bas
 
 When these 2 files are ready, they can be distributed to mobile devices and imported through the app.
 
+A small example on how to experience the ICP slides on mobile is available in `dist/DEMO`.
+
 ### Example:
 
 In the following case, the slides request all languages in order to work.
