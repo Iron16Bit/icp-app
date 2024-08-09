@@ -1,0 +1,90 @@
+
+            <!DOCTYPE html>
+            <html lang="en">
+                
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Interactive Code Playgrounds</title>
+
+        <!-- Main Reveal Stylesheet -->
+        <link rel="stylesheet" href="reveal.css">
+
+        <!-- Blood Reveal Theme Stylesheet -->
+        <link rel="stylesheet" href="blood.css" id="theme">
+
+        <!-- Custom stylesheet to make reveal work with our playgrounds -->
+        <link rel="stylesheet" href="custom-style.css">
+
+        <!-- If the user asks for the pdf version, set section height to auto -->
+        <!-- Otherwise reveal.js breaks if the section height is set to 100% -->
+        <script>
+            if (window.location.href.indexOf('?print-pdf') > -1) {
+                // Create a new css element setting the height of .section to none
+                var css = document.createElement("style");
+                css.innerHTML = "section { height: auto; }";
+                // Append the css to the head
+                document.head.appendChild(css);
+            }
+        </script>
+
+        <!-- Bundle containing the code playground web components -->
+        <script src="javascript.iife.js"></script>
+    </head>
+                
+        <body class="h-screen full-page-demo reveal-viewport" data-page="icp" style="transition: transform 0.8s ease 0s;">
+            <div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default"
+                data-background-transition="fade">
+                <div class="slides">
+                    <section><section><h3 class="title">DEMO SLIDES</h3><p class="subtitle">ICP on Mobile Devices</p></section></section>
+<section><section><h3 class="title">LANGUAGES</h3><div style="width: min(80vw, 160vh); height: min(40vw, 80vh); display: flex; flex-direction: column; overflow: auto; text-align: start;"><div style="width: 100%; padding: 0px min(2vw, 4vh); box-sizing: border-box;"><p><br></p><p>In order to keep the slides <span style="color: rgb(153, 51, 255);">as light as possible</span>, the only programming language used will be <strong>Javascript</strong>.</p><p><br></p><p>Slides are better experienced holdin the phone in <span style="color: rgb(194, 133, 255);">landscape mode (horizontal)</span>.</p></div></div></section></section>
+<section><section><h3 class="title">CODE EXECUTION</h3><div style="width: min(80vw, 160vh); height: min(40vw, 80vh); display: flex; flex-direction: column; overflow: auto; text-align: start;"><div style="width: 100%; padding: 0px min(2vw, 4vh); box-sizing: border-box;"><p>Below there is the first code editor.</p><p>It is<span style="color: rgb(230, 0, 0);"> </span><span style="color: rgb(153, 51, 255);">read-only</span><span style="color: rgb(255, 255, 255);">, so it is simply possible to press the </span><span style="color: rgb(0, 138, 0);">green "play" button</span><span style="color: rgb(255, 255, 255);"> to execute the code.</span></p></div></div></section>
+<section><h3 class="title">CODE EXECUTION</h3><div style="width: min(80vw, 160vh); height: min(40vw, 80vh); display: flex; flex-direction: column; overflow: auto; justify-content: center; align-items: center;"><div style="width: 100%; height: 100%;"><javascript-editor contenteditable="false" code="console.log(&quot;Hello, world!&quot;)" theme="dark" type="normal" style="height: 100%; width: 100%;"></javascript-editor></div></div></section></section>
+<section><section><h3 class="title">CODE EDITING</h3><div style="width: min(80vw, 160vh); height: min(40vw, 80vh); display: flex; flex-direction: column; overflow: auto; text-align: start;"><div style="width: 100%; padding: 0px min(2vw, 4vh); box-sizing: border-box;"><p>Below there is the second code editor.</p><p>In this case, it is also possible to <span style="color: rgb(153, 51, 255);">edit the code</span> in the editor. When clicking on the code, the keyboard appears. Since the keyboard covers a great part of the screen, code editing is better done hloding the phone in <span style="color: rgb(194, 133, 255);">portrait mode (vertical)</span>.</p></div></div></section>
+<section><h3 class="title">CODE EDITING</h3><div style="width: min(80vw, 160vh); height: min(40vw, 80vh); display: flex; flex-direction: column; overflow: auto; justify-content: center; align-items: center;"><div style="width: 100%; height: 100%;"><javascript-editor contenteditable="true" code="console.log(&quot;Type your text here...&quot;)" theme="dark" type="normal" style="height: 100%; width: 100%;"></javascript-editor></div></div></section></section>
+                </div>
+            </div>
+
+            <!-- Import the main reveal script -->
+            <script src="reveal.js"></script>
+
+            <!-- Initialize reveal -->
+            <script>
+                Reveal.initialize({
+                    // Display controls in the bottom right corner
+                    controls: true,
+                    // Whether to show help when pressing ?
+                    help: false,
+                    // Display a presentation progress bar
+                    progress: true,
+                    // Push each slide change to the browser history
+                    history: true,
+                    // Enable keyboard shortcuts for navigation
+                    keyboard: true,
+                    // Enable the slide overview mode
+                    overview: true,
+                    // Set the width of the slides
+                    width: "90%",
+                    // Set the height of the slides
+                    height: "90%",
+                    // Vertical centering of slides
+                    center: true,
+                    // Loop the presentation
+                    loop: false,
+                    // Enables touch navigation on devices with touch input
+                    touch: true,
+                    // Apply a 3D roll to links on hover
+                    rollingLinks: true,
+                    // Transition style for full page slide backgrounds
+                    backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+                    // Select a theme
+                    theme: 'blood',
+                    // Select the type of slides transition
+                    transition: 'slide',
+                    // IMPORTANT: disable the default layout (centering and scaling) to make the code editors work correctly
+                    disableLayout: true
+                });
+            </script>
+        </body>
+            </html>
