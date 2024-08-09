@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 // A service which allows to keep the local http server open in background
@@ -35,17 +36,20 @@ class ServerService : Service() {
         stopSelf.setAction(Actions.STOP.toString())
         val pStopSelf = PendingIntent.getService(this, 0, stopSelf,
             PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        builder.addAction(R.drawable.icon, "STOP", pStopSelf);
+        builder.addAction(R.drawable.icon, "STOP", pStopSelf)
 
-        startForeground(1, builder.build())
+        val randomInt = System.currentTimeMillis()%10000
+
+        startForeground(randomInt.toInt(), builder.build())
 
         server = Server()
-        server!!.start()
+        server!!.launch()
     }
 
     private fun stop() {
         server?.stop()
         stopSelf()
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     enum class Actions {

@@ -28,7 +28,6 @@ public class Server extends NanoHTTPD {
 
     public void stop() {
         closeAllConnections();
-        stop();
     }
 
     @Override
