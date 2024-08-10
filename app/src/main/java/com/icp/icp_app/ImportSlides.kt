@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.Button
@@ -97,7 +98,7 @@ class ImportSlides : AppCompatActivity() {
 
             return lastHtml
         }
-        return null
+        return ""
     }
 
     private fun initShredPrefTheme() {
@@ -140,6 +141,10 @@ class ImportSlides : AppCompatActivity() {
 
         // Unused value needed to actually show the last selected HTML
         val tmp = getLastHtml()
+        if (tmp == "") {
+            val box = findViewById<RelativeLayout>(R.id.infoContainer)
+            box.visibility = GONE
+        }
 
         // Requests permission
         val permissions = Permissions()

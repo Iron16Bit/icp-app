@@ -1,5 +1,6 @@
 package com.icp.icp_app
 
+import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ClipData
@@ -11,8 +12,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.ImageButton
@@ -21,7 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import org.w3c.dom.Text
+
 
 // The third page of the app, opens the slides in the browser
 
@@ -48,6 +47,18 @@ class ShowSlides : AppCompatActivity() {
             val containerBg = findViewById<RelativeLayout>(R.id.infoBackground)
             containerBg.setBackgroundColor(Color.parseColor(if (theme == "dark") { "#182436" } else { "#d8cedb" }))
         }
+    }
+
+    // At the moment it looks like using this deprecated method still is the best way
+    @SuppressWarnings("deprecation")
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,16 +117,26 @@ class ShowSlides : AppCompatActivity() {
             this.startActivity(intentMain)
         }
 
-        val startServer = findViewById<Button>(R.id.server)
-        startServer.setOnClickListener {
-            Intent(applicationContext, ServerService::class.java).also {
-                it.action = ServerService.Actions.START.toString()
-                startService(it)
-            }
-
+        if (isMyServiceRunning(ServerService::class.java)) {
             openBrowser.visibility = VISIBLE
             findViewById<RelativeLayout>(R.id.infoContainer).visibility = VISIBLE
             findViewById<TextView>(R.id.or).visibility = VISIBLE
+        }
+
+        val startServer = findViewById<Button>(R.id.server)
+        startServer.setOnClickListener {
+            if (!isMyServiceRunning(ServerService::class.java)) {
+                Intent(applicationContext, ServerService::class.java).also {
+                    it.action = ServerService.Actions.START.toString()
+                    startService(it)
+                }
+
+                openBrowser.visibility = VISIBLE
+                findViewById<RelativeLayout>(R.id.infoContainer).visibility = VISIBLE
+                findViewById<TextView>(R.id.or).visibility = VISIBLE
+            } else {
+                Toast.makeText(this, "ALREADY RUNNING", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val callback = onBackPressedDispatcher.addCallback(this) {

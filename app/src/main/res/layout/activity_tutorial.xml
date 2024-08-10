@@ -164,8 +164,7 @@
             android:background="#5a565c"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginTop="8dp">
 
             <RelativeLayout
                 android:id="@+id/SubContainer2"
@@ -193,6 +192,71 @@
                     android:layout_marginBottom="10dp"
                     android:layout_below="@id/Image5"
                     android:src="@drawable/tutorial2_2"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/SubTitle3"
+            android:scrollbars = "vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Container2"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="3. STOP THE APP:" />
+
+        <RelativeLayout
+            android:id="@+id/Container3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SubTitle3"
+            android:background="#5a565c"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:id="@+id/SubContainer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="#2f4970">
+
+                <TextView
+                    android:id="@+id/Text3"
+                    android:scrollbars = "vertical"
+                    android:layout_margin="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:text="After having pressed the 'START SERVER' button the app will keep working in the background and the following notification will be shown"/>
+
+                <ImageView
+                    android:id="@+id/Image7"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Text3"
+                    android:src="@drawable/tutorial3"/>
+
+                <TextView
+                    android:id="@+id/Text4"
+                    android:scrollbars = "vertical"
+                    android:layout_margin="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_below="@id/Image7"
+                    android:text="While the app is running in background, it is possible to import new slides/languages and refresh the browser page to update it"/>
 
             </RelativeLayout>
 

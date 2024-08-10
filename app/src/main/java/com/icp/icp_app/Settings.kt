@@ -146,6 +146,34 @@ class Settings : AppCompatActivity() {
             permissions.initDir(this)
         }
 
+        val prev = findViewById<ImageButton>(R.id.Back)
+        prev.setOnClickListener{
+            val tutorial = sharedPref!!.getString("show_tutorial", null)
+            if (tutorial == "false") {
+                val intentMain = Intent(
+                    this,
+                    ImportSlides::class.java
+                )
+                this.startActivity(intentMain)
+            } else {
+                val intentMain = Intent(
+                    this,
+                    Tutorial::class.java
+                )
+                this.startActivity(intentMain)
+            }
+        }
+
+        val tutorialButton = findViewById<Button>(R.id.Tutorial)
+        tutorialButton.setOnClickListener {
+            val editor = sharedPref?.edit()
+            if (editor != null) {
+                editor.putString("show_tutorial", "true")
+                editor.apply()
+            }
+            prev.callOnClick()
+        }
+
         val directoryButton = findViewById<Button>(R.id.Directory)
         directoryButton.setOnClickListener {
             val f = File(Environment.getExternalStorageDirectory().absolutePath + "/MyFiles/")
@@ -165,6 +193,12 @@ class Settings : AppCompatActivity() {
             if (editor2 != null) {
                 editor2.putString("actual_theme", "dark")
                 editor2.apply()
+            }
+
+            val editor3 = sharedPref?.edit()
+            if (editor3 != null) {
+                editor3.putString("selected_html", "")
+                editor3.apply()
             }
         }
 
@@ -187,24 +221,6 @@ class Settings : AppCompatActivity() {
                 }
 
                 updateAllColors()
-            }
-        }
-
-        val prev = findViewById<ImageButton>(R.id.Back)
-        prev.setOnClickListener{
-            val tutorial = sharedPref!!.getString("show_tutorial", null)
-            if (tutorial == "false") {
-                val intentMain = Intent(
-                    this,
-                    ImportSlides::class.java
-                )
-                this.startActivity(intentMain)
-            } else {
-                val intentMain = Intent(
-                    this,
-                    Tutorial::class.java
-                )
-                this.startActivity(intentMain)
             }
         }
 

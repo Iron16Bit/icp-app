@@ -3,16 +3,14 @@ package com.icp.icp_app
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 // A service which allows to keep the local http server open in background
 
 class ServerService : Service() {
 
-    private var server: Server? = null;
+    private var server: Server? = null
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
